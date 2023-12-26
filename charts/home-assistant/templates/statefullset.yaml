@@ -57,6 +57,12 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: configuration
+              mountPath: "/config/configuration.yaml"
+              subPath: "configuration.yaml"
+            - name: secrets
+              mountPath: "/config/secrets.yaml"
+              subPath: "secrets.yaml"
           ports:
             - name: http
               containerPort: {{ .Values.container.port }}
@@ -75,6 +81,14 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: {{ include "home-assistant.fullname" . }}
+        - name: configuration
+          readOnly: true
+          configMap:
+            name: {{ include "home-assistant.fullname" . }}
+        - name: secrets
+          readOnly: true
+          secret:
+            name: {{ include "home-assistant.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

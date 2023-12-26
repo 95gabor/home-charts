@@ -49,14 +49,3 @@ Selector labels
 app.kubernetes.io/name: {{ include "home-assistant.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "home-assistant.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "home-assistant.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
