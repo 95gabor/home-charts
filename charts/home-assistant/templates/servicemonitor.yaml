@@ -41,7 +41,7 @@ spec:
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
-  selector:
-    matchLabels:
-      {{- include "home-assistant.selectorLabels" (dict "context" . "component" .Values.name "name" (printf "%s-metrics" .Values.name)) | nindent 6 }}
+  # selector:
+  #   matchLabels:
+  #     {{- include "home-assistant.selectorLabels" (dict "context" . "component" .Values.name "name" (printf "%s-metrics" .Values.name)) | nindent 6 }}
 {{- end }}
