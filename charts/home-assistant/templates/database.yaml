@@ -1,0 +1,36 @@
+{{- if .Values.postgresOperator.enabled -}}
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: {{ include "home-assistant.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  {{- with .Values.postgresOperator.annotations }}
+  annotations:
+    {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
+spec:
+  database: {{ .Values.postgresOperator.databaseName | quote }}
+  dropOnDelete: {{ .Values.postgresOperator.dropOnDelete }}
+  masterRole: {{ .Values.postgresOperator.masterRole | quote }}
+  schemas:
+    - {{ .Values.postgresOperator.schema | quote }}
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: {{ include "home-assistant.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  {{- with .Values.postgresOperator.annotations }}
+  annotations:
+    {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
+spec:
+  role: {{ .Values.postgresOperator.role | quote }}
+  database: {{ include "home-assistant.fullname" . }}
+  secretName: {{ .Values.postgresOperator.secretName | quote }}
+  privileges: {{ .Values.postgresOperator.privileges | quote }}
+{{- end }}
