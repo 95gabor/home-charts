@@ -107,7 +107,6 @@ persistence:
   accessMode: ReadWriteOnce
 
 # TLS certificate configuration via cert-manager
-## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/tls/#tls-certificates-used-by-argocd-server
 certificate:
   enabled: false
   secretName: home-assistant-tls
