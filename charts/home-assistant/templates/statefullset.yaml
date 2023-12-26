@@ -88,7 +88,7 @@ spec:
         - name: secrets
           readOnly: true
           secret:
-            name: {{ include "home-assistant.fullname" . }}
+            secretName: {{ include "home-assistant.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
