@@ -48,8 +48,8 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       dnsPolicy: {{ .Values.dnsPolicy }}
-      containers:
-        {{- if gt (len .Values.homeAssistant.secrets) 0 }}
+      {{- if gt (len .Values.homeAssistant.secrets) 0 }}
+      initContainers:
         - name: init-container
           image: alpine:3.18.5
           command: ['sh', '-c', 'echo "" > /etc/secrets/secrets.yaml && {{ $initCommand }}']
@@ -62,7 +62,8 @@ spec:
             subPath: {{ $val.subPath | quote }}
             readOnly: true
           {{- end }}
-        {{- end }}
+      {{- end }}
+      containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
