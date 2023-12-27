@@ -1,7 +1,9 @@
 {{- $initCommand := "" }}
+{{- $separator := "" }}
 
 {{- range $key, $val := .Values.homeAssistant.secrets }}
-{{- $initCommand = printf "%s && echo \"%s: $(cat /etc/secrets/%s)\" >> /etc/secrets/secrets.yaml" $initCommand $val.key $val.key }}
+{{- $initCommand = printf "%s%s echo \"%s: $(cat /etc/secrets/%s/%s)\" >> /etc/secrets/secrets.yaml" $initCommand $separator $val.key $val.key }}
+{{- $separator = " &&" }}
 {{- end }}
 
 apiVersion: apps/v1
