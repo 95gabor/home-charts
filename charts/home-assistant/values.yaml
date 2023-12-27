@@ -73,8 +73,6 @@ ingress:
 container:
   port: 8123
 
-initialDelaySeconds: 90
-
 env: []
 
 resources: {}
@@ -164,3 +162,5 @@ postgresOperator:
   role: home-assistant
   secretName: home-assistant-database-credentials
   privileges: OWNER
+  secretTemplate:       # Output secrets can be customized using standard Go templates
+    PQ_URL: "host={{.Host}} user={{.Role}} password={{.Password}} dbname={{.Database}}"

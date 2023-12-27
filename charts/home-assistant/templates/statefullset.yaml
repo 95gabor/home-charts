@@ -96,7 +96,6 @@ spec:
             - name: http
               containerPort: {{ .Values.container.port }}
               protocol: TCP
-          initialDelaySeconds: {{ .Values.initialDelaySeconds }}
           livenessProbe:
             httpGet:
               path: /

@@ -1,4 +1,4 @@
-{{- if .Values.postgresOperator.enabled -}}
+{{- if and (.Capabilities.APIVersions.Has "db.movetokube.com/v1alpha1") .Values.postgresOperator.enabled -}}
 apiVersion: db.movetokube.com/v1alpha1
 kind: Postgres
 metadata:
@@ -33,4 +33,7 @@ spec:
   database: {{ include "home-assistant.fullname" . }}
   secretName: {{ .Values.postgresOperator.secretName | quote }}
   privileges: {{ .Values.postgresOperator.privileges | quote }}
+  {{- if .Values.postgresOperator.secretTemplate }}
+  secretTemplate: {{ .Values.postgresOperator.secretTemplate | toYaml | nindent 4 }}
+  {{- end }}
 {{- end }}
