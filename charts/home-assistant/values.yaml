@@ -162,5 +162,5 @@ postgresOperator:
   role: home-assistant
   secretName: home-assistant-database-credentials
   privileges: OWNER
-  secretTemplate:       # Output secrets can be customized using standard Go templates
-    PQ_URL: "host={{.Host}} user={{.Role}} password={{.Password}} dbname={{.Database}}"
+#  secretTemplate:       # Output secrets can be customized using standard Go templates
+#    POSTGRES_URL: "postgresql://{{.Role}}:{{.Password}}@{{.Host}}/{{.Database}}"
