@@ -1,3 +1,9 @@
+{{- $initCommand := "" }}
+
+{{- range $key, $val := .Values.homeAssistant.secrets }}
+{{- $initCommand = printf "%s && echo \"%s: $(cat /etc/secrets/%s)\" >> /etc/secrets/secrets.yaml" $initCommand $key $key }}
+{{- end }}
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -41,6 +47,20 @@ spec:
       {{- end }}
       dnsPolicy: {{ .Values.dnsPolicy }}
       containers:
+        {{- if gt (len .Values.homeAssistant.secrets) 0 }}
+        - name: init-container
+          image: alpine:3.18.5
+          command: ['sh', '-c', '{{ $initCommand }}']
+          volumeMounts:
+          - name: secrets
+            mountPath: /etc/secrets
+          {{- range $key, $val := .Values.homeAssistant.secrets }}
+          - name: {{ $key | quote }}
+            mountPath: "/etc/secrets/{{ $key }}"
+            subPath: {{ $val.key | quote }}
+            readOnly: true
+          {{- end }}
+        {{- end }}
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -49,7 +69,7 @@ spec:
                 {{- toYaml . | nindent 10 }}
             {{- end }}
             - name: TZ
-              value: {{ .Values.timezone }}
+              value: {{ .Values.homeAssistant.timezone }}
             {{- with .Values.envFrom }}
             envFrom:
                 {{- toYaml . | nindent 10 }}
@@ -57,12 +77,18 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: configuration
-              mountPath: "/config/configuration.yaml"
-              subPath: "configuration.yaml"
+            {{- if gt (len .Values.homeAssistant.secrets) 0 }}
             - name: secrets
               mountPath: "/config/secrets.yaml"
-              subPath: "secrets.yaml"
+              subPath: secrets.yaml
+              readOnly: true
+            {{- end }}
+            {{- range $key, $val := .Values.homeAssistant.configurations }}
+            - name: configuration
+              mountPath: "/config/{{ $key }}"
+              subPath: {{ $key | quote }}
+              readOnly: true
+            {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.container.port }}
@@ -82,13 +108,17 @@ spec:
           persistentVolumeClaim:
             claimName: {{ include "home-assistant.fullname" . }}
         - name: configuration
-          readOnly: true
           configMap:
             name: {{ include "home-assistant.fullname" . }}
-        - name: secrets
-          readOnly: true
+        {{- range $key, $val := .Values.homeAssistant.secrets }}
+        - name: {{ $key | quote }}
           secret:
-            secretName: {{ include "home-assistant.fullname" . }}
+            secretName: {{ $val.secretName | quote }}
+        {{- end }}
+        {{- if gt (len .Values.homeAssistant.secrets) 0 }}
+        - name: secrets
+          emptyDir: {}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

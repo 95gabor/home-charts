@@ -14,14 +14,26 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-timezone: Europe/Budapest
-
 homeAssistant:
-  configuration: |
-    default_config:
-  secrets: |
-    # Use this file to store secrets like usernames and passwords.
-    # Learn more at https://www.home-assistant.io/docs/configuration/secrets/
+  timezone: Europe/Budapest
+  configurations:
+    configuration.yaml: |
+      default_config:
+
+      group: !include groups.yaml
+      script: !include scripts.yaml
+      scene: !include scenes.yaml
+      # automation: !include automations.yaml
+    groups.yaml: |
+      # place your groups here
+    scripts.yaml: |
+      # place your scripts here
+    scenes.yaml: |
+      # place your scenes here
+  secrets: []
+    # postgres_url:
+    #   secretName: home-assistant-database-credentials
+    #   key: POSTGRES_URL
 
 podAnnotations: {}
 podLabels: {}

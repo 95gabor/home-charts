@@ -4,5 +4,4 @@ metadata:
   name: {{ include "home-assistant.fullname" . }}
   namespace: {{ .Release.Namespace | quote }}
 data:
-  configuration.yaml: |
-    {{- .Values.homeAssistant.configuration | nindent 4 }}
+  {{- toYaml .Values.homeAssistant.configurations | nindent 2 }}  
