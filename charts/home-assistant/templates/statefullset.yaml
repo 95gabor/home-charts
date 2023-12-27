@@ -52,7 +52,7 @@ spec:
         {{- if gt (len .Values.homeAssistant.secrets) 0 }}
         - name: init-container
           image: alpine:3.18.5
-          command: ['sh', '-c', '{{ $initCommand }}']
+          command: ['sh', '-c', 'echo "" > /etc/secrets/secrets.yaml', '{{ $initCommand }}']
           volumeMounts:
           - name: secrets
             mountPath: /etc/secrets
