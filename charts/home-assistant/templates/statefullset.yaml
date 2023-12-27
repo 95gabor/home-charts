@@ -1,7 +1,7 @@
 {{- $initCommand := "" }}
 
 {{- range $key, $val := .Values.homeAssistant.secrets }}
-{{- $initCommand = printf "%s && echo \"%s: $(cat /etc/secrets/%s)\" >> /etc/secrets/secrets.yaml" $initCommand $key $key }}
+{{- $initCommand = printf "%s && echo \"%s: $(cat /etc/secrets/%s)\" >> /etc/secrets/secrets.yaml" $initCommand $val.key $val.key }}
 {{- end }}
 
 apiVersion: apps/v1
@@ -56,8 +56,8 @@ spec:
             mountPath: /etc/secrets
           {{- range $key, $val := .Values.homeAssistant.secrets }}
           - name: {{ $key | quote }}
-            mountPath: "/etc/secrets/{{ $key }}"
-            subPath: {{ $val.key | quote }}
+            mountPath: "/etc/secrets/{{ $val.key }}"
+            subPath: {{ $val.subPath | quote }}
             readOnly: true
           {{- end }}
         {{- end }}

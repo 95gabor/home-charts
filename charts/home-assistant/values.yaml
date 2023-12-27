@@ -31,9 +31,10 @@ homeAssistant:
     scenes.yaml: |
       # place your scenes here
   secrets: []
-    # postgres_url:
+    # postgres-url:
+    #   key: postgres_url
     #   secretName: home-assistant-database-credentials
-    #   key: POSTGRES_URL
+    #   subPath: POSTGRES_URL
 
 podAnnotations: {}
 podLabels: {}
