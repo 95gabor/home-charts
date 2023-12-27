@@ -11,6 +11,6 @@ spec:
     - port: {{ .Values.service.port }}
       targetPort: http
       protocol: TCP
-      name: http
+      name: {{ .Values.service.portName }}
   selector:
     {{- include "home-assistant.selectorLabels" . | nindent 4 }}

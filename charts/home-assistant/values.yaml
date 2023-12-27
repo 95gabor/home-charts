@@ -53,6 +53,7 @@ securityContext: {}
 service:
   type: ClusterIP
   port: 80
+  portName: http
 
 ingress:
   enabled: false
@@ -143,6 +144,7 @@ certificate:
 serviceMonitor:
   enabled: false
   interval: 30s
+  scrapeTimeout: 10s
   relabelings: []
   metricRelabelings: []
   selector: {}
@@ -151,6 +153,9 @@ serviceMonitor:
   namespace: "" # "monitoring"
   additionalLabels: {}
   annotations: {}
+  # bearerTokenSecret:
+  #   name: home-assistant-scrape-token
+  #   key: token
 
 postgresOperator:
   enabled: false
