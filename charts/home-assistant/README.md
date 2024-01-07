@@ -4,6 +4,13 @@
 
 Home Assistant Helm chart for Kubernetes
 
+## Usage
+
+```sh
+helm repo add home-charts https://95gabor.github.io/home-charts
+helm install home-assistant home-charts/home-assistant
+```
+
 ## Values
 
 | Key | Type | Default | Description |
