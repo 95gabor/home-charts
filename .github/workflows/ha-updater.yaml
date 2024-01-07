@@ -47,5 +47,5 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         title: 'bump(home-assistant): update app version'
         body: 'Automatically updated Home Assistant app versions'
-        commit-message: 'bump(home-assistant): appVersion $stable_tag'
+        commit-message: 'bump(home-assistant): appVersion ${{ env.stable_tag }}'
         branch-suffix: timestamp

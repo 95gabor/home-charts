@@ -1,8 +1,8 @@
 # home-assistant
 
-![Version: 0.2.12](https://img.shields.io/badge/Version-0.2.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2023.12.4](https://img.shields.io/badge/AppVersion-2023.12.4-informational?style=flat-square)
+![GitHub Release](https://img.shields.io/github/v/release/95gabor/home-charts?style=flat-square&filter=home-assistant-*) ![Chart Type](https://img.shields.io/badge/dynamic/yaml?style=flat-square&url=https%3A%2F%2Fraw.githubusercontent.com%2F95gabor%2Fhome-charts%2Fmain%2Fcharts%2Fhome-assistant%2FChart.yaml&query=%24.type&label=Type) ![App Version](https://img.shields.io/badge/dynamic/yaml?style=flat-square&url=https%3A%2F%2Fraw.githubusercontent.com%2F95gabor%2Fhome-charts%2Fmain%2Fcharts%2Fhome-assistant%2FChart.yaml&query=%24.version&label=AppVersion)
 
-A Helm chart for Kubernetes
+Home Assistant Helm chart for Kubernetes
 
 ## Values
 
