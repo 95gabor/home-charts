@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   home-assistant:
   - apiVersion: v2
+    appVersion: 2024.9.0
+    created: "2024-09-05T08:37:11.901260746Z"
+    description: A Helm chart for Kubernetes
+    digest: ad6f0cce3b8531ab9704ca801ce21a74b7f9a57b0d16d134780b366a86bfa904
+    name: home-assistant
+    type: application
+    urls:
+    - https://github.com/95gabor/home-charts/releases/download/home-assistant-0.2.52/home-assistant-0.2.52.tgz
+    version: 0.2.52
+  - apiVersion: v2
     appVersion: 2024.8.3
     created: "2024-08-26T08:21:32.47449056Z"
     description: A Helm chart for Kubernetes
@@ -601,4 +611,4 @@ entries:
     urls:
     - https://github.com/95gabor/home-charts/releases/download/home-assistant-0.1.2/home-assistant-0.1.2.tgz
     version: 0.1.2
-generated: "2024-08-26T08:21:32.474705389Z"
+generated: "2024-09-05T08:37:11.901468324Z"
