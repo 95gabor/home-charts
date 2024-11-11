@@ -16,7 +16,7 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-    
+
     - name: Install semver CLI
       run: |
         wget -O /usr/local/bin/semver \
