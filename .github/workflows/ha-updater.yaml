@@ -17,6 +17,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - uses: actions/setup-python@v3
+
+    - uses: pre-commit/action@v3.0.1
+
     - name: Install semver CLI
       run: |
         wget -O /usr/local/bin/semver \
