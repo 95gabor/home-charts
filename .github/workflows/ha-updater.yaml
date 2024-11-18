@@ -17,7 +17,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - uses: actions/setup-python@v3
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
 
     - uses: pre-commit/action@v3.0.1
 
@@ -75,5 +77,6 @@ jobs:
         title: 'bump(home-assistant): update app version'
         body: 'Automatically updated Home Assistant app versions'
         commit-message: 'bump(home-assistant): appVersion ${{ env.stable_tag }}'
-        branch-suffix: timestamp
+        branch: bump/home-assistant
+        # branch-suffix: timestamp
         sign-commits: true
