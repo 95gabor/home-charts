@@ -1,0 +1,108 @@
+# Default values for home-assistant.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: mbentley/timemachine
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "" # "smb"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+hostNetwork: true
+
+service:
+  type: ClusterIP
+
+env:
+  - name: ADVERTISED_HOSTNAME
+    value: ""
+  - name: CUSTOM_SMB_CONF
+    value: "false"
+  - name: CUSTOM_USER
+    value: "false"
+  - name: DEBUG_LEVEL
+    value: "1"
+  - name: MIMIC_MODEL
+    value: "TimeCapsule8,119"
+  - name: EXTERNAL_CONF
+    value: ""
+  - name: HIDE_SHARES
+    value: "no"
+  - name: TM_USERNAME
+    value: "timemachine"
+  - name: TM_GROUPNAME
+    value: "timemachine"
+  - name: TM_UID
+    value: "1000"
+  - name: TM_GID
+    value: "1000"
+  - name: PASSWORD
+    value: "timemachine"
+  - name: SET_PERMISSIONS
+    value: "false"
+  - name: SHARE_NAME
+    value: "TimeMachine"
+  - name: SMB_INHERIT_PERMISSIONS
+    value: "no"
+  - name: SMB_NFS_ACES
+    value: "no"
+  - name: SMB_METADATA
+    value: "stream"
+  - name: SMB_PORT
+    value: "445"
+  - name: SMB_VFS_OBJECTS
+    value: "fruit streams_xattr"
+  - name: VOLUME_SIZE_LIMIT
+    value: "0"
+  - name: WORKGROUP
+    value: "WORKGROUP"
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+persistence:
+  # storageClass: ''
+  size: 500Gi
+  accessMode: ReadWriteOnce

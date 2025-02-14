@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "samba.fullname" . }}
+  labels:
+    {{- include "samba.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "samba.selectorLabels" . | nindent 6 }}
+  serviceName: {{ include "samba.fullname" . }}
+  template:
+    metadata:
+      annotations:
+      labels:
+        {{- include "samba.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- end }}
+      {{- if .Values.hostNetwork }}
+      hostNetwork: {{ .Values.hostNetwork }}
+      {{- end }}
+      {{- with .Values.dnsConfig }}
+      dnsConfig:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      dnsPolicy: {{ .Values.dnsPolicy }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- with (concat .Values.env ) }}
+                {{- toYaml . | nindent 10 }}
+            {{- end }}
+            {{- with .Values.envFrom }}
+            envFrom:
+                {{- toYaml . | nindent 10 }}
+            {{- end }}
+          volumeMounts:
+            - name: tm
+              mountPath: /opt/timemachine
+            - name: run-samba
+              mountPath: /run/samba
+          ports:
+            - name: udp137
+              containerPort: 137
+              protocol: UDP
+            - name: udp138
+              containerPort: 138
+              protocol: UDP
+            - name: tcp139
+              containerPort: 139
+              protocol: TCP
+            - name: tcp445
+              containerPort: 445
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: tm
+          persistentVolumeClaim:
+            claimName: {{ include "samba.fullname" . }}
+        - name: var-lib-samba
+          emptyDir: {}
+        - name: var-cache-samba
+          emptyDir: {}
+        - name: run-samba
+          emptyDir: {}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
