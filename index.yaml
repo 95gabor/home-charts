@@ -881,4 +881,15 @@ entries:
     urls:
     - https://github.com/95gabor/home-charts/releases/download/home-assistant-0.1.2/home-assistant-0.1.2.tgz
     version: 0.1.2
-generated: "2025-02-13T08:15:16.417500123Z"
+  samba:
+  - apiVersion: v2
+    appVersion: smb
+    created: "2025-02-14T11:41:18.954564865Z"
+    description: A Helm chart for Kubernetes
+    digest: 152540afc617544b634a5e031c07a93bd892500016b20ad0164194fb0f389917
+    name: samba
+    type: application
+    urls:
+    - https://github.com/95gabor/home-charts/releases/download/samba-0.0.1/samba-0.0.1.tgz
+    version: 0.0.1
+generated: "2025-02-14T11:41:18.954801869Z"
