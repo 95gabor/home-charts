@@ -57,13 +57,17 @@ jobs:
         fi
 
         if [[ "$stable_tag" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-          if [ $(semver get major "$stable_tag") -ne $(semver get major "$app_version") ]; then
-            new_version=$(semver bump minor "$chart_version")
-          else
-            new_version=$(semver bump patch "$chart_version")
-          fi
+            app_minor=$(semver get minor "$app_version")
+            stable_minor=$(semver get minor "$stable_tag")
+
+            if [ "$stable_minor" -ne "$app_minor" ]; then
+                new_version=$(semver bump major "$chart_version")
+            else
+                new_version=$(semver bump patch "$chart_version")
+            fi
         else
-          new_version=$(semver bump patch "$chart_version")
+          echo "Invalid stable tag format: ${stable_tag}"
+          exit 1
         fi
 
         echo "Updating Chart.yaml with appVersion: ${stable_tag} chartVersion: ${new_version}"

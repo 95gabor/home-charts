@@ -2,21 +2,32 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# -- Number of replicas for the Home Assistant deployment
 replicaCount: 1
 
+# -- Image configuration for Home Assistant
 image:
+  # -- Home Assistant image repository
   repository: homeassistant/home-assistant
+  # -- Image pull policy
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
+  # -- Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
+# -- Image pull secrets for private registries
 imagePullSecrets: []
+# -- Override the name of the chart
 nameOverride: ""
+# -- Override the full name of the chart
 fullnameOverride: ""
 
+# -- Home Assistant specific configuration
 homeAssistant:
+  # -- Timezone for Home Assistant
   timezone: Europe/Budapest
+  # -- Home Assistant configuration files
   configurations:
+    # -- Main configuration.yaml content
     configuration.yaml: |
       default_config:
 
@@ -24,24 +35,32 @@ homeAssistant:
       script: !include scripts.yaml
       scene: !include scenes.yaml
       # automation: !include automations.yaml
+    # -- Groups configuration
     groups.yaml: |
       # place your groups here
+    # -- Scripts configuration
     scripts.yaml: |
       # place your scripts here
+    # -- Scenes configuration
     scenes.yaml: |
       # place your scenes here
+  # -- Secrets configuration for Home Assistant
   secrets: []
     # postgres-url:
     #   key: postgres_url
     #   secretName: home-assistant-database-credentials
     #   subPath: POSTGRES_URL
 
+# -- Pod annotations
 podAnnotations: {}
+# -- Pod labels
 podLabels: {}
 
+# -- Pod security context
 podSecurityContext: {}
   # fsGroup: 2000
 
+# -- Security context for the container
 securityContext: {}
   # capabilities:
   #   drop:
@@ -50,32 +69,46 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+# -- Service configuration
 service:
+  # -- Service type
   type: ClusterIP
+  # -- Service port
   port: 80
+  # -- Service port name
   portName: http
 
+# -- Ingress configuration
 ingress:
+  # -- Enable ingress
   enabled: false
+  # -- Ingress class name
   className: ""
+  # -- Ingress annotations
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
+  # -- Ingress hosts configuration
   hosts:
     - host: chart-example.local
       paths:
         - path: /
           pathType: ImplementationSpecific
+  # -- TLS configuration for ingress
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
 
+# -- Container configuration
 container:
+  # -- Container port
   port: 8123
 
+# -- Environment variables
 env: []
 
+# -- Resource limits and requests
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -88,70 +121,120 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
+# -- Horizontal Pod Autoscaler configuration
 autoscaling:
+  # -- Enable horizontal pod autoscaling
   enabled: false
+  # -- Minimum number of replicas
   minReplicas: 1
+  # -- Maximum number of replicas
   maxReplicas: 100
+  # -- Target CPU utilization percentage
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
+# -- Node selector for pod placement
 nodeSelector: {}
 
+# -- Tolerations for pod scheduling
 tolerations: []
 
+# -- Affinity rules for pod scheduling
 affinity: {}
 
+# -- Persistence configuration
 persistence:
+  # -- Storage class for PVC
   # storageClass: ''
+  # -- Size of the persistent volume
   size: 4Gi
+  # -- Access mode for the persistent volume
   accessMode: ReadWriteOnce
 
-# TLS certificate configuration via cert-manager
+# -- TLS certificate configuration via cert-manager
 certificate:
+  # -- Enable certificate management
   enabled: false
+  # -- Secret name for the TLS certificate
   secretName: home-assistant-tls
+  # -- Domain name for the certificate
   domain: home.example.com
+  # -- Additional hosts for the certificate
   additionalHosts: []
+  # -- Certificate duration
   duration: ""
+  # -- Certificate renewal time before expiry
   renewBefore: ""
+  # -- Certificate issuer configuration
   issuer:
+    # -- Issuer group
     group: ""
+    # -- Issuer kind
     kind: ""
+    # -- Issuer name
     name: ""
+  # -- Private key configuration
   privateKey:
+    # -- Private key rotation policy
     rotationPolicy: Never
+    # -- Private key encoding
     encoding: PKCS1
+    # -- Private key algorithm
     algorithm: RSA
+    # -- Private key size
     size: 2048
+  # -- Certificate annotations
   annotations: {}
+  # -- Certificate usages
   usages: []
 
-
+# -- ServiceMonitor configuration for Prometheus
 serviceMonitor:
+  # -- Enable ServiceMonitor
   enabled: false
+  # -- Scrape interval
   interval: 30s
+  # -- Scrape timeout
   scrapeTimeout: 10s
+  # -- Relabeling configuration
   relabelings: []
+  # -- Metric relabeling configuration
   metricRelabelings: []
+  # -- Service selector
   selector: {}
+  # -- Service scheme
   scheme: ""
+  # -- TLS configuration
   tlsConfig: {}
+  # -- Namespace for ServiceMonitor
   namespace: "" # "monitoring"
+  # -- Additional labels for ServiceMonitor
   additionalLabels: {}
+  # -- Annotations for ServiceMonitor
   annotations: {}
   # bearerTokenSecret:
   #   name: home-assistant-scrape-token
   #   key: token
 
+# -- PostgreSQL operator configuration
 postgresOperator:
+  # -- Enable PostgreSQL operator integration
   enabled: false
+  # -- Annotations for PostgreSQL resources
   annotations: {}
+  # -- Database name
   databaseName: home-assistant
+  # -- Drop database on delete
   dropOnDelete: false
+  # -- Master role name
   masterRole: home-assistant
+  # -- Database schema
   schema: home-assistant
+  # -- Database role
   role: home-assistant
+  # -- Secret name for database credentials
   secretName: home-assistant-database-credentials
+  # -- Database privileges
   privileges: OWNER
 #  secretTemplate:       # Output secrets can be customized using standard Go templates
 #    POSTGRES_URL: "postgresql://{{.Role}}:{{.Password}}@{{.Host}}/{{.Database}}"
