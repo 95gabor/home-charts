@@ -1,6 +1,6 @@
 # samba
 
-![Version: 0.0.1](https://img.shields.io/badge/Version-0.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: smb](https://img.shields.io/badge/AppVersion-smb-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: smb](https://img.shields.io/badge/AppVersion-smb-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -13,8 +13,50 @@ A Helm chart for Kubernetes
 | autoscaling.maxReplicas | int | `100` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| env | list | `[]` |  |
+| env[0].name | string | `"ADVERTISED_HOSTNAME"` |  |
+| env[0].value | string | `""` |  |
+| env[10].name | string | `"TM_GID"` |  |
+| env[10].value | string | `"1000"` |  |
+| env[11].name | string | `"PASSWORD"` |  |
+| env[11].value | string | `"timemachine"` |  |
+| env[12].name | string | `"SET_PERMISSIONS"` |  |
+| env[12].value | string | `"false"` |  |
+| env[13].name | string | `"SHARE_NAME"` |  |
+| env[13].value | string | `"TimeMachine"` |  |
+| env[14].name | string | `"SMB_INHERIT_PERMISSIONS"` |  |
+| env[14].value | string | `"no"` |  |
+| env[15].name | string | `"SMB_NFS_ACES"` |  |
+| env[15].value | string | `"no"` |  |
+| env[16].name | string | `"SMB_METADATA"` |  |
+| env[16].value | string | `"stream"` |  |
+| env[17].name | string | `"SMB_PORT"` |  |
+| env[17].value | string | `"445"` |  |
+| env[18].name | string | `"SMB_VFS_OBJECTS"` |  |
+| env[18].value | string | `"fruit streams_xattr"` |  |
+| env[19].name | string | `"VOLUME_SIZE_LIMIT"` |  |
+| env[19].value | string | `"0"` |  |
+| env[1].name | string | `"CUSTOM_SMB_CONF"` |  |
+| env[1].value | string | `"false"` |  |
+| env[20].name | string | `"WORKGROUP"` |  |
+| env[20].value | string | `"WORKGROUP"` |  |
+| env[2].name | string | `"CUSTOM_USER"` |  |
+| env[2].value | string | `"false"` |  |
+| env[3].name | string | `"DEBUG_LEVEL"` |  |
+| env[3].value | string | `"1"` |  |
+| env[4].name | string | `"MIMIC_MODEL"` |  |
+| env[4].value | string | `"TimeCapsule8,119"` |  |
+| env[5].name | string | `"EXTERNAL_CONF"` |  |
+| env[5].value | string | `""` |  |
+| env[6].name | string | `"HIDE_SHARES"` |  |
+| env[6].value | string | `"no"` |  |
+| env[7].name | string | `"TM_USERNAME"` |  |
+| env[7].value | string | `"timemachine"` |  |
+| env[8].name | string | `"TM_GROUPNAME"` |  |
+| env[8].value | string | `"timemachine"` |  |
+| env[9].name | string | `"TM_UID"` |  |
+| env[9].value | string | `"1000"` |  |
 | fullnameOverride | string | `""` |  |
+| hostNetwork | bool | `true` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"mbentley/timemachine"` |  |
 | image.tag | string | `""` |  |
