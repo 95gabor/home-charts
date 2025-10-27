@@ -33,14 +33,14 @@ jobs:
     - name: Get stable digest
       id: get-stable-digest
       run: |
-        stable_digest=$(curl -s "https://registry.hub.docker.com/v2/repositories/homeassistant/home-assistant/tags/stable" | jq -r .digest)
+        stable_digest=$(curl -f -s "https://registry.hub.docker.com/v2/repositories/homeassistant/home-assistant/tags/stable" | jq -r .digest)
         echo "Stable digest: $stable_digest"
         echo "stable_digest=$stable_digest" >> "$GITHUB_ENV"
 
     - name: Get app versions
       id: get-image-tag
       run: |
-        tag=$(curl -s "https://registry.hub.docker.com/v2/repositories/homeassistant/home-assistant/tags?page_size=100" | \
+        tag=$(curl -f -s "https://registry.hub.docker.com/v2/repositories/homeassistant/home-assistant/tags?page_size=100" | \
           jq -r --arg stable_digest "$stable_digest" '.results | map(select(.digest == $stable_digest) | .name) | map(select(test("^[0-9]{4}\\.[0-9]{1,2}\\.[0-9]+$"))) | .[]')
         echo "App stable tag: $tag"
         echo "stable_tag=$tag" >> "$GITHUB_ENV"
