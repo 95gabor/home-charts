@@ -8,10 +8,13 @@ image:
   repository: mbentley/timemachine
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
+  # @default -- empty
   tag: "" # "smb"
 
 imagePullSecrets: []
+# @default -- empty
 nameOverride: ""
+# @default -- empty
 fullnameOverride: ""
 
 podAnnotations: {}

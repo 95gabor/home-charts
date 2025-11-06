@@ -6,26 +6,32 @@
 replicaCount: 1
 
 # -- Image configuration for Home Assistant
+# @default -- See `values.yaml`
 image:
   # -- Home Assistant image repository
   repository: homeassistant/home-assistant
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
+  # @default -- empty
   tag: ""
 
 # -- Image pull secrets for private registries
 imagePullSecrets: []
 # -- Override the name of the chart
+# @default -- empty
 nameOverride: ""
 # -- Override the full name of the chart
+# @default -- empty
 fullnameOverride: ""
 
 # -- Home Assistant specific configuration
+# @default -- See `values.yaml`
 homeAssistant:
   # -- Timezone for Home Assistant
   timezone: Europe/Budapest
   # -- Home Assistant configuration files
+  # @default -- See `values.yaml`
   configurations:
     # -- Main configuration.yaml content
     configuration.yaml: |
@@ -52,15 +58,19 @@ homeAssistant:
     #   subPath: POSTGRES_URL
 
 # -- Pod annotations
+# @default -- See `values.yaml`
 podAnnotations: {}
 # -- Pod labels
+# @default -- See `values.yaml`
 podLabels: {}
 
 # -- Pod security context
+# @default -- See `values.yaml`
 podSecurityContext: {}
   # fsGroup: 2000
 
 # -- Security context for the container
+# @default -- See `values.yaml`
 securityContext: {}
   # capabilities:
   #   drop:
@@ -70,6 +80,7 @@ securityContext: {}
   # runAsUser: 1000
 
 # -- Service configuration
+# @default -- See `values.yaml`
 service:
   # -- Service type
   type: ClusterIP
@@ -79,10 +90,12 @@ service:
   portName: http
 
 # -- Ingress configuration
+# @default -- See `values.yaml`
 ingress:
   # -- Enable ingress
   enabled: false
   # -- Ingress class name
+  # @default -- empty
   className: ""
   # -- Ingress annotations
   annotations: {}
@@ -101,6 +114,7 @@ ingress:
   #      - chart-example.local
 
 # -- Container configuration
+# @default -- See `values.yaml`
 container:
   # -- Container port
   port: 8123
@@ -109,6 +123,7 @@ container:
 env: []
 
 # -- Resource limits and requests
+# @default -- See `values.yaml`
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -122,6 +137,7 @@ resources: {}
   #   memory: 128Mi
 
 # -- Horizontal Pod Autoscaler configuration
+# @default -- See `values.yaml`
 autoscaling:
   # -- Enable horizontal pod autoscaling
   enabled: false
@@ -134,15 +150,18 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 # -- Node selector for pod placement
+# @default -- See `values.yaml`
 nodeSelector: {}
 
 # -- Tolerations for pod scheduling
 tolerations: []
 
 # -- Affinity rules for pod scheduling
+# @default -- See `values.yaml`
 affinity: {}
 
 # -- Persistence configuration
+# @default -- See `values.yaml`
 persistence:
   # -- Storage class for PVC
   # storageClass: ''
@@ -152,6 +171,7 @@ persistence:
   accessMode: ReadWriteOnce
 
 # -- TLS certificate configuration via cert-manager
+# @default -- See `values.yaml`
 certificate:
   # -- Enable certificate management
   enabled: false
@@ -162,18 +182,25 @@ certificate:
   # -- Additional hosts for the certificate
   additionalHosts: []
   # -- Certificate duration
+  # @default -- empty
   duration: ""
   # -- Certificate renewal time before expiry
+  # @default -- empty
   renewBefore: ""
   # -- Certificate issuer configuration
+  # @default -- See `values.yaml`
   issuer:
     # -- Issuer group
+    # @default -- empty
     group: ""
     # -- Issuer kind
+    # @default -- empty
     kind: ""
     # -- Issuer name
+    # @default -- empty
     name: ""
   # -- Private key configuration
+  # @default -- See `values.yaml`
   privateKey:
     # -- Private key rotation policy
     rotationPolicy: Never
@@ -184,11 +211,13 @@ certificate:
     # -- Private key size
     size: 2048
   # -- Certificate annotations
+  # @default -- See `values.yaml`
   annotations: {}
   # -- Certificate usages
   usages: []
 
 # -- ServiceMonitor configuration for Prometheus
+# @default -- See `values.yaml`
 serviceMonitor:
   # -- Enable ServiceMonitor
   enabled: false
@@ -201,26 +230,34 @@ serviceMonitor:
   # -- Metric relabeling configuration
   metricRelabelings: []
   # -- Service selector
+  # @default -- See `values.yaml`
   selector: {}
   # -- Service scheme
+  # @default -- empty
   scheme: ""
   # -- TLS configuration
+  # @default -- See `values.yaml`
   tlsConfig: {}
   # -- Namespace for ServiceMonitor
+  # @default -- empty
   namespace: "" # "monitoring"
   # -- Additional labels for ServiceMonitor
+  # @default -- See `values.yaml`
   additionalLabels: {}
   # -- Annotations for ServiceMonitor
+  # @default -- See `values.yaml`
   annotations: {}
   # bearerTokenSecret:
   #   name: home-assistant-scrape-token
   #   key: token
 
 # -- PostgreSQL operator configuration
+# @default -- See `values.yaml`
 postgresOperator:
   # -- Enable PostgreSQL operator integration
   enabled: false
   # -- Annotations for PostgreSQL resources
+  # @default -- See `values.yaml`
   annotations: {}
   # -- Database name
   databaseName: home-assistant
