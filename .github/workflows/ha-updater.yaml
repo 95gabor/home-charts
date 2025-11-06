@@ -73,7 +73,8 @@ jobs:
         echo "Updating Chart.yaml with appVersion: ${stable_tag} chartVersion: ${new_version}"
         yq eval ".appVersion = \"$stable_tag\" | .version = \"$new_version\"" -i "$src_file"
 
-    - uses: pre-commit/action@v3.0.1
+    - name: Run pre-commit hooks
+      run: pre-commit run --all-files || pre-commit run --all-files
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
