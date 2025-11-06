@@ -4,6 +4,39 @@
 
 A Helm chart for Kubernetes
 
+## Chart Repo
+
+Add the following repo to use the chart:
+
+```console
+helm repo add home-charts https://95gabor.github.io/home-charts
+helm repo update
+```
+
+### Installation
+
+- Install/upgrade in a namespace (using local chart directory):
+
+```bash
+helm upgrade --install samba . \
+  -n samba --create-namespace \
+  -f values.yaml
+```
+
+- Or install from a chart repository:
+
+```bash
+helm upgrade --install samba home-charts/samba \
+  -n samba --create-namespace \
+  -f values.yaml
+```
+
+- Uninstall:
+
+```bash
+helm uninstall samba -n samba
+```
+
 ## Values
 
 | Key | Type | Default | Description |
