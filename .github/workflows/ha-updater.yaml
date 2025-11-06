@@ -3,7 +3,7 @@ name: Update Home Assistant appVersion
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 8 * * *'
+    - cron: "0 8 * * *"
 
 jobs:
   update-version:
@@ -14,76 +14,76 @@ jobs:
       pull-requests: write
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - uses: actions/setup-python@v5
-      with:
-        python-version: '3.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
 
-    - uses: pre-commit/action@v3.0.1
+      - uses: pre-commit/action@v3.0.1
 
-    - name: Install semver CLI
-      run: |
-        wget -O /usr/local/bin/semver \
-          https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
-        chmod +x /usr/local/bin/semver
-        semver --version
+      - name: Install semver CLI
+        run: |
+          wget -O /usr/local/bin/semver \
+            https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
+          chmod +x /usr/local/bin/semver
+          semver --version
 
-    - name: Get stable digest
-      id: get-stable-digest
-      run: |
-        stable_digest=$(curl -f -s "https://registry.hub.docker.com/v2/repositories/homeassistant/home-assistant/tags/stable" | jq -r .digest)
-        echo "Stable digest: $stable_digest"
-        echo "stable_digest=$stable_digest" >> "$GITHUB_ENV"
+      - name: Get stable digest
+        id: get-stable-digest
+        run: |
+          stable_digest=$(curl -f -s "https://registry.hub.docker.com/v2/repositories/homeassistant/home-assistant/tags/stable" | jq -r .digest)
+          echo "Stable digest: $stable_digest"
+          echo "stable_digest=$stable_digest" >> "$GITHUB_ENV"
 
-    - name: Get app versions
-      id: get-image-tag
-      run: |
-        tag=$(curl -f -s "https://registry.hub.docker.com/v2/repositories/homeassistant/home-assistant/tags?page_size=100" | \
-          jq -r --arg stable_digest "$stable_digest" '.results | map(select(.digest == $stable_digest) | .name) | map(select(test("^[0-9]{4}\\.[0-9]{1,2}\\.[0-9]+$"))) | .[]')
-        echo "App stable tag: $tag"
-        echo "stable_tag=$tag" >> "$GITHUB_ENV"
+      - name: Get app versions
+        id: get-image-tag
+        run: |
+          tag=$(curl -f -s "https://registry.hub.docker.com/v2/repositories/homeassistant/home-assistant/tags?page_size=100" | \
+            jq -r --arg stable_digest "$stable_digest" '.results | map(select(.digest == $stable_digest) | .name) | map(select(test("^[0-9]{4}\\.[0-9]{1,2}\\.[0-9]+$"))) | .[]')
+          echo "App stable tag: $tag"
+          echo "stable_tag=$tag" >> "$GITHUB_ENV"
 
-    - name: Update Chart.yaml
-      run: |
-        src_file="charts/home-assistant/Chart.yaml"
-        app_version=$(yq '.appVersion' "$src_file")
-        chart_version=$(yq '.version' "$src_file")
+      - name: Update Chart.yaml
+        run: |
+          src_file="charts/home-assistant/Chart.yaml"
+          app_version=$(yq '.appVersion' "$src_file")
+          chart_version=$(yq '.version' "$src_file")
 
-        if [ "$app_version" == "$stable_tag" ]; then
-          echo "App version: ${app_version} is already up-to-date. No changes needed."
-          exit 0
-        fi
+          if [ "$app_version" == "$stable_tag" ]; then
+            echo "App version: ${app_version} is already up-to-date. No changes needed."
+            exit 0
+          fi
 
-        if [[ "$stable_tag" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            app_minor=$(semver get minor "$app_version")
-            stable_minor=$(semver get minor "$stable_tag")
+          if [[ "$stable_tag" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              app_minor=$(semver get minor "$app_version")
+              stable_minor=$(semver get minor "$stable_tag")
 
-            if [ "$stable_minor" -ne "$app_minor" ]; then
-                new_version=$(semver bump major "$chart_version")
-            else
-                new_version=$(semver bump patch "$chart_version")
-            fi
-        else
-          echo "Invalid stable tag format: ${stable_tag}"
-          exit 1
-        fi
+              if [ "$stable_minor" -ne "$app_minor" ]; then
+                  new_version=$(semver bump major "$chart_version")
+              else
+                  new_version=$(semver bump patch "$chart_version")
+              fi
+          else
+            echo "Invalid stable tag format: ${stable_tag}"
+            exit 1
+          fi
 
-        echo "Updating Chart.yaml with appVersion: ${stable_tag} chartVersion: ${new_version}"
-        yq eval ".appVersion = \"$stable_tag\" | .version = \"$new_version\"" -i "$src_file"
+          echo "Updating Chart.yaml with appVersion: ${stable_tag} chartVersion: ${new_version}"
+          yq eval ".appVersion = \"$stable_tag\" | .version = \"$new_version\"" -i "$src_file"
 
-    - name: Run pre-commit hooks
-      run: pre-commit run --all-files || pre-commit run --all-files
+      - name: Run pre-commit hooks
+        run: pre-commit run --all-files || pre-commit run --all-files
 
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v7
-      if: github.ref == 'refs/heads/main'
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        title: 'bump(home-assistant): update app version'
-        body: 'Automatically updated Home Assistant app versions'
-        commit-message: 'bump(home-assistant): appVersion ${{ env.stable_tag }}'
-        branch: bump/home-assistant
-        # branch-suffix: timestamp
-        sign-commits: true
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        if: github.ref == 'refs/heads/main'
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "chore(home-assistant): bump app version to ${{ env.stable_tag }}"
+          body: "Automatically updated Home Assistant app versions"
+          commit-message: "chore(home-assistant): bump appVersion to ${{ env.stable_tag }}"
+          branch: bump/home-assistant
+          # branch-suffix: timestamp
+          sign-commits: true
