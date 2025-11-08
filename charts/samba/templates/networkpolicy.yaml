@@ -1,0 +1,80 @@
+{{- if .Values.networkPolicy.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "samba.fullname" . }}
+  labels:
+    {{- include "samba.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "samba.selectorLabels" . | nindent 6 }}
+  policyTypes:
+    {{- if .Values.networkPolicy.ingress }}
+    - Ingress
+    {{- end }}
+    {{- if .Values.networkPolicy.egress }}
+    - Egress
+    {{- end }}
+  {{- if .Values.networkPolicy.ingress }}
+  ingress:
+    {{- range .Values.networkPolicy.ingress }}
+    - from:
+        {{- if .namespaceSelector }}
+        - namespaceSelector:
+            {{- toYaml .namespaceSelector | nindent 14 }}
+        {{- end }}
+        {{- if .podSelector }}
+        - podSelector:
+            {{- toYaml .podSelector | nindent 14 }}
+        {{- end }}
+        {{- if .ipBlock }}
+        - ipBlock:
+            {{- toYaml .ipBlock | nindent 14 }}
+        {{- end }}
+      {{- if .ports }}
+      ports:
+        {{- range .ports }}
+        - protocol: {{ .protocol | default "TCP" }}
+          {{- if .port }}
+          port: {{ .port }}
+          {{- end }}
+          {{- if .portRange }}
+          port: {{ .portRange }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- if .Values.networkPolicy.egress }}
+  egress:
+    {{- range .Values.networkPolicy.egress }}
+    - to:
+        {{- if .namespaceSelector }}
+        - namespaceSelector:
+            {{- toYaml .namespaceSelector | nindent 14 }}
+        {{- end }}
+        {{- if .podSelector }}
+        - podSelector:
+            {{- toYaml .podSelector | nindent 14 }}
+        {{- end }}
+        {{- if .ipBlock }}
+        - ipBlock:
+            {{- toYaml .ipBlock | nindent 14 }}
+        {{- end }}
+      {{- if .ports }}
+      ports:
+        {{- range .ports }}
+        - protocol: {{ .protocol | default "TCP" }}
+          {{- if .port }}
+          port: {{ .port }}
+          {{- end }}
+          {{- if .portRange }}
+          port: {{ .portRange }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
