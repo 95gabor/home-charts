@@ -8,7 +8,7 @@ A Helm chart for Home Assistant on Kubernetes
 
 Add the following repo to use the chart:
 
-```console
+```bash
 helm repo add home-charts https://95gabor.github.io/home-charts
 helm repo update
 ```
