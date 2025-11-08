@@ -1,6 +1,6 @@
 # home-assistant
 
-![Version: 2.1.0](https://img.shields.io/badge/Version-2.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2025.11.1](https://img.shields.io/badge/AppVersion-2025.11.1-informational?style=flat-square)
+![Version: 2.2.0](https://img.shields.io/badge/Version-2.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2025.11.1](https://img.shields.io/badge/AppVersion-2025.11.1-informational?style=flat-square)
 
 A Helm chart for Home Assistant on Kubernetes
 
@@ -41,104 +41,109 @@ helm uninstall home-assistant -n home-assistant
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | See `values.yaml` | Affinity rules for pod scheduling |
+| affinity | object | See `values.yaml` | Affinity rules for pod scheduling (pod affinity/anti-affinity, node affinity) |
 | autoscaling | object | See `values.yaml` | Horizontal Pod Autoscaler configuration |
-| autoscaling.enabled | bool | `false` | Enable horizontal pod autoscaling |
-| autoscaling.maxReplicas | int | `100` | Maximum number of replicas |
-| autoscaling.minReplicas | int | `1` | Minimum number of replicas |
-| autoscaling.targetCPUUtilizationPercentage | int | `80` | Target CPU utilization percentage |
+| autoscaling.enabled | bool | `false` | Enable Horizontal Pod Autoscaler to automatically scale pods based on metrics |
+| autoscaling.maxReplicas | int | `100` | Maximum number of pod replicas allowed |
+| autoscaling.minReplicas | int | `1` | Minimum number of pod replicas to maintain |
+| autoscaling.targetCPUUtilizationPercentage | int | `80` | Target CPU utilization percentage for autoscaling (0-100) |
 | certificate | object | See `values.yaml` | TLS certificate configuration via cert-manager |
-| certificate.additionalHosts | list | `[]` | Additional hosts for the certificate |
-| certificate.annotations | object | See `values.yaml` | Certificate annotations |
-| certificate.domain | string | `"home.example.com"` | Domain name for the certificate |
-| certificate.duration | string | empty | Certificate duration |
-| certificate.enabled | bool | `false` | Enable certificate management |
+| certificate.additionalHosts | list | `[]` | Additional hostnames to include in the certificate (SAN entries) |
+| certificate.annotations | object | See `values.yaml` | Annotations to add to the Certificate resource |
+| certificate.domain | string | `"home.example.com"` | Primary domain name for the TLS certificate |
+| certificate.duration | string | empty | Certificate validity duration (e.g., "2160h" for 90 days) |
+| certificate.enabled | bool | `false` | Enable automatic TLS certificate management using cert-manager |
 | certificate.issuer | object | See `values.yaml` | Certificate issuer configuration |
-| certificate.issuer.group | string | empty | Issuer group |
-| certificate.issuer.kind | string | empty | Issuer kind |
-| certificate.issuer.name | string | empty | Issuer name |
+| certificate.issuer.group | string | empty | API group of the issuer resource (e.g., "cert-manager.io") |
+| certificate.issuer.kind | string | empty | Kind of the issuer resource (Issuer or ClusterIssuer) |
+| certificate.issuer.name | string | empty | Name of the issuer resource |
 | certificate.privateKey | object | See `values.yaml` | Private key configuration |
-| certificate.privateKey.algorithm | string | `"RSA"` | Private key algorithm |
-| certificate.privateKey.encoding | string | `"PKCS1"` | Private key encoding |
-| certificate.privateKey.rotationPolicy | string | `"Never"` | Private key rotation policy |
-| certificate.privateKey.size | int | `2048` | Private key size |
-| certificate.renewBefore | string | empty | Certificate renewal time before expiry |
-| certificate.secretName | string | `"home-assistant-tls"` | Secret name for the TLS certificate |
-| certificate.usages | list | `[]` | Certificate usages |
+| certificate.privateKey.algorithm | string | `"RSA"` | Private key algorithm (RSA or ECDSA) |
+| certificate.privateKey.encoding | string | `"PKCS1"` | Private key encoding format (PKCS1 or PKCS8) |
+| certificate.privateKey.rotationPolicy | string | `"Never"` | Private key rotation policy (Never, Always, OnKeyRotation) |
+| certificate.privateKey.size | int | `2048` | Private key size in bits (for RSA: 2048, 4096; for ECDSA: 256, 384, 521) |
+| certificate.renewBefore | string | empty | Time before certificate expiry to start renewal (e.g., "720h" for 30 days) |
+| certificate.secretName | string | `"home-assistant-tls"` | Kubernetes secret name where the TLS certificate will be stored |
+| certificate.usages | list | `[]` | Certificate key usages (e.g., ["signing", "key encipherment", "server auth"]) |
 | container | object | See `values.yaml` | Container configuration |
-| container.port | int | `8123` | Container port |
+| container.port | int | `8123` | Port number the container listens on |
 | dnsConfig | object | empty | DNS configuration for pods |
 | dnsPolicy | string | "ClusterFirst" | DNS policy for pods |
 | env | list | `[]` | Environment variables |
 | fullnameOverride | string | empty | Override the full name of the chart |
 | homeAssistant | object | See `values.yaml` | Home Assistant specific configuration |
-| homeAssistant.configurations | object | See `values.yaml` | Home Assistant configuration files |
-| homeAssistant.configurations."configuration.yaml" | string | `"default_config:\n\ngroup: !include groups.yaml\nscript: !include scripts.yaml\nscene: !include scenes.yaml\n# automation: !include automations.yaml\n"` | Main configuration.yaml content |
-| homeAssistant.configurations."groups.yaml" | string | `"# place your groups here\n"` | Groups configuration |
-| homeAssistant.configurations."scenes.yaml" | string | `"# place your scenes here\n"` | Scenes configuration |
-| homeAssistant.configurations."scripts.yaml" | string | `"# place your scripts here\n"` | Scripts configuration |
+| homeAssistant.configurations | object | See `values.yaml` | Home Assistant configuration files (mounted as ConfigMap) |
+| homeAssistant.configurations."configuration.yaml" | string | See `values.yaml` | Main configuration.yaml content |
+| homeAssistant.configurations."groups.yaml" | string | See `values.yaml` | Groups configuration |
+| homeAssistant.configurations."scenes.yaml" | string | See `values.yaml` | Scenes configuration |
+| homeAssistant.configurations."scripts.yaml" | string | See `values.yaml` | Scripts configuration |
 | homeAssistant.secrets | list | `[]` | Secrets configuration for Home Assistant |
-| homeAssistant.timezone | string | `"Europe/Budapest"` | Timezone for Home Assistant |
+| homeAssistant.timezone | string | `"Europe/Budapest"` | Timezone for Home Assistant (IANA timezone database name) |
 | image | object | See `values.yaml` | Image configuration for Home Assistant |
-| image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
-| image.repository | string | `"homeassistant/home-assistant"` | Home Assistant image repository |
-| image.tag | string | empty | Overrides the image tag whose default is the chart appVersion. |
+| image.pullPolicy | string | `"IfNotPresent"` | Image pull policy (IfNotPresent, Always, Never) |
+| image.repository | string | `"homeassistant/home-assistant"` | Container image repository for Home Assistant |
+| image.tag | string | empty | Container image tag (overrides chart appVersion if set) |
 | imagePullSecrets | list | `[]` | Image pull secrets for private registries |
 | ingress | object | See `values.yaml` | Ingress configuration |
-| ingress.annotations | object | `{}` | Ingress annotations |
-| ingress.className | string | empty | Ingress class name |
-| ingress.enabled | bool | `false` | Enable ingress |
-| ingress.hosts | list | `[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}]` | Ingress hosts configuration |
-| ingress.tls | list | `[]` | TLS configuration for ingress |
+| ingress.annotations | object | `{}` | Ingress annotations (e.g., for cert-manager, nginx settings) |
+| ingress.className | string | empty | Ingress class name (e.g., nginx, traefik) |
+| ingress.enabled | bool | `false` | Enable ingress resource creation |
+| ingress.hosts | list | `[]` | Ingress hosts configuration Each host can be configured with a single path (using 'path' and 'pathType') or multiple paths (using 'paths' array). If 'paths' is specified, it takes precedence. |
+| ingress.tls | list | `[]` | TLS configuration for ingress (certificate secrets) |
 | nameOverride | string | empty | Override the name of the chart |
 | networkPolicy | object | See `values.yaml` | Network Policy configuration |
-| networkPolicy.egress | list | empty | Egress rules |
-| networkPolicy.enabled | bool | `false` | Enable Network Policy |
-| networkPolicy.ingress | list | empty | Ingress rules |
-| nodeSelector | object | See `values.yaml` | Node selector for pod placement |
+| networkPolicy.egress | list | empty | Egress rules defining allowed outgoing traffic |
+| networkPolicy.enabled | bool | `false` | Enable Network Policy to control network traffic to/from pods |
+| networkPolicy.ingress | list | empty | Ingress rules defining allowed incoming traffic |
+| nodeSelector | object | See `values.yaml` | Node selector for pod placement (constrain pods to specific nodes) |
 | persistence | object | See `values.yaml` | Persistence configuration |
-| persistence.accessMode | string | `"ReadWriteOnce"` | Access mode for the persistent volume |
-| persistence.size | string | `"4Gi"` | Size of the persistent volume |
-| podAnnotations | object | See `values.yaml` | Pod annotations |
+| persistence.accessMode | string | `"ReadWriteOnce"` | Access mode for the persistent volume (ReadWriteOnce, ReadWriteMany, ReadOnlyMany) |
+| persistence.size | string | `"4Gi"` | Size of the persistent volume claim |
+| persistence.storageClass | string | empty | Storage class for PVC (empty = use default storage class) |
+| podAnnotations | object | See `values.yaml` | Pod annotations (metadata attached to pods) |
 | podDisruptionBudget | object | See `values.yaml` | Pod Disruption Budget configuration |
-| podDisruptionBudget.enabled | bool | `false` | Enable Pod Disruption Budget |
-| podDisruptionBudget.maxUnavailable | string | empty | Maximum number of unavailable pods (mutually exclusive with minAvailable) |
-| podDisruptionBudget.minAvailable | string | empty | Minimum number of available pods (mutually exclusive with maxUnavailable) |
-| podLabels | object | See `values.yaml` | Pod labels |
-| podSecurityContext | object | See `values.yaml` | Pod security context |
+| podDisruptionBudget.enabled | bool | `false` | Enable Pod Disruption Budget to control pod evictions during disruptions |
+| podDisruptionBudget.maxUnavailable | string | empty | Maximum number of unavailable pods during disruptions (mutually exclusive with minAvailable) |
+| podDisruptionBudget.minAvailable | string | empty | Minimum number of available pods during disruptions (mutually exclusive with maxUnavailable) |
+| podLabels | object | See `values.yaml` | Pod labels (metadata for pod selection and organization) |
+| podSecurityContext | object | See `values.yaml` | Pod security context (applies to all containers in the pod) |
 | postgresOperator | object | See `values.yaml` | PostgreSQL operator configuration |
-| postgresOperator.annotations | object | See `values.yaml` | Annotations for PostgreSQL resources |
-| postgresOperator.databaseName | string | `"home-assistant"` | Database name |
-| postgresOperator.dropOnDelete | bool | `false` | Drop database on delete |
-| postgresOperator.enabled | bool | `false` | Enable PostgreSQL operator integration |
-| postgresOperator.masterRole | string | `"home-assistant"` | Master role name |
-| postgresOperator.privileges | string | `"OWNER"` | Database privileges |
-| postgresOperator.role | string | `"home-assistant"` | Database role |
-| postgresOperator.schema | string | `"home-assistant"` | Database schema |
-| postgresOperator.secretName | string | `"home-assistant-database-credentials"` | Secret name for database credentials |
+| postgresOperator.annotations | object | See `values.yaml` | Annotations to add to PostgreSQL resources created by the operator |
+| postgresOperator.databaseName | string | `"home-assistant"` | Name of the PostgreSQL database to create |
+| postgresOperator.dropOnDelete | bool | `false` | Whether to drop the database when the resource is deleted |
+| postgresOperator.enabled | bool | `false` | Enable PostgreSQL operator integration for automatic database provisioning |
+| postgresOperator.masterRole | string | `"home-assistant"` | Master role name for the database |
+| postgresOperator.privileges | string | `"OWNER"` | Database privileges granted to the role (OWNER, READ, WRITE) |
+| postgresOperator.role | string | `"home-assistant"` | Database role name for application access |
+| postgresOperator.schema | string | `"home-assistant"` | Database schema name |
+| postgresOperator.secretName | string | `"home-assistant-database-credentials"` | Kubernetes secret name where database credentials will be stored |
 | replicaCount | int | `1` | Number of replicas for the Home Assistant deployment |
 | resources | object | See `values.yaml` | Resource limits and requests |
-| resources.limits | object | `{"cpu":"2000m","memory":"2Gi"}` | Resource limits |
-| resources.requests | object | `{"cpu":"500m","memory":"512Mi"}` | Resource requests |
-| securityContext | object | See `values.yaml` | Security context for the container |
+| resources.limits | object | See `values.yaml` | Resource limits |
+| resources.limits.cpu | string | `"2000m"` | CPU limit for the container |
+| resources.limits.memory | string | `"2Gi"` | Memory limit for the container |
+| resources.requests | object | See `values.yaml` | Resource requests |
+| resources.requests.cpu | string | `"500m"` | CPU request for the container |
+| resources.requests.memory | string | `"512Mi"` | Memory request for the container |
+| securityContext | object | See `values.yaml` | Security context for the container (applies to the main container) |
 | service | object | See `values.yaml` | Service configuration |
-| service.port | int | `80` | Service port |
-| service.portName | string | `"http"` | Service port name |
-| service.type | string | `"ClusterIP"` | Service type |
+| service.port | int | `80` | Service port number exposed by the service |
+| service.portName | string | `"http"` | Name of the service port |
+| service.type | string | `"ClusterIP"` | Kubernetes service type (ClusterIP, NodePort, LoadBalancer) |
 | serviceMonitor | object | See `values.yaml` | ServiceMonitor configuration for Prometheus |
-| serviceMonitor.additionalLabels | object | See `values.yaml` | Additional labels for ServiceMonitor |
-| serviceMonitor.annotations | object | See `values.yaml` | Annotations for ServiceMonitor |
-| serviceMonitor.enabled | bool | `false` | Enable ServiceMonitor |
-| serviceMonitor.interval | string | `"30s"` | Scrape interval |
-| serviceMonitor.metricRelabelings | list | `[]` | Metric relabeling configuration |
-| serviceMonitor.namespace | string | empty | Namespace for ServiceMonitor |
-| serviceMonitor.relabelings | list | `[]` | Relabeling configuration |
-| serviceMonitor.scheme | string | empty | Service scheme |
-| serviceMonitor.scrapeTimeout | string | `"10s"` | Scrape timeout |
-| serviceMonitor.selector | object | See `values.yaml` | Service selector |
-| serviceMonitor.tlsConfig | object | See `values.yaml` | TLS configuration |
+| serviceMonitor.additionalLabels | object | See `values.yaml` | Additional labels to add to the ServiceMonitor |
+| serviceMonitor.annotations | object | See `values.yaml` | Annotations to add to the ServiceMonitor |
+| serviceMonitor.enabled | bool | `false` | Enable ServiceMonitor resource for Prometheus Operator |
+| serviceMonitor.interval | string | `"30s"` | Interval at which Prometheus should scrape metrics |
+| serviceMonitor.metricRelabelings | list | `[]` | Metric relabeling rules applied after scraping |
+| serviceMonitor.namespace | string | empty | Namespace where the ServiceMonitor should be created |
+| serviceMonitor.relabelings | list | `[]` | Relabeling rules applied before scraping |
+| serviceMonitor.scheme | string | empty | Protocol scheme for scraping (http or https) |
+| serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout for metric scraping |
+| serviceMonitor.selector | object | See `values.yaml` | Service selector to match the service |
+| serviceMonitor.tlsConfig | object | See `values.yaml` | TLS configuration for secure scraping |
 | terminationGracePeriodSeconds | string | empty | Termination grace period in seconds |
-| tolerations | list | `[]` | Tolerations for pod scheduling |
+| tolerations | list | `[]` | Tolerations for pod scheduling (allow pods to be scheduled on tainted nodes) |
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)
