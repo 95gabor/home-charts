@@ -1,28 +1,44 @@
-# Default values for home-assistant.
+# Default values for samba.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# -- Number of replicas for the Samba deployment
 replicaCount: 1
 
+# -- Image configuration for Samba Time Machine
+# @default -- See `values.yaml`
 image:
+  # -- Samba Time Machine image repository
   repository: mbentley/timemachine
+  # -- Image pull policy
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
+  # -- Overrides the image tag whose default is the chart appVersion.
   # @default -- empty
-  tag: "" # "smb"
+  tag: ""
 
+# -- Image pull secrets for private registries
 imagePullSecrets: []
+# -- Override the name of the chart
 # @default -- empty
 nameOverride: ""
+# -- Override the full name of the chart
 # @default -- empty
 fullnameOverride: ""
 
+# -- Pod annotations
+# @default -- See `values.yaml`
 podAnnotations: {}
+# -- Pod labels
+# @default -- See `values.yaml`
 podLabels: {}
 
+# -- Pod security context
+# @default -- See `values.yaml`
 podSecurityContext: {}
   # fsGroup: 2000
 
+# -- Security context for the container
+# @default -- See `values.yaml`
 securityContext: {}
   # capabilities:
   #   drop:
@@ -31,81 +47,188 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+# -- Use host network for the pod
 hostNetwork: true
 
+# -- DNS policy for pods
+# @default -- "ClusterFirst"
+dnsPolicy: "ClusterFirst"
+
+# -- DNS configuration for pods
+# @default -- empty
+dnsConfig: {}
+
+# -- Termination grace period in seconds
+# @default -- empty
+terminationGracePeriodSeconds: ""
+
+# -- Service configuration
+# @default -- See `values.yaml`
 service:
+  # -- Service type
   type: ClusterIP
+  # -- Service ports configuration
+  # @default -- See `values.yaml`
+  ports:
+    # -- NetBIOS Name Service (TCP)
+    tcp139: 139
+    # -- NetBIOS Name Service (UDP)
+    udp137: 137
+    # -- NetBIOS Datagram Service (UDP)
+    udp138: 138
+    # -- SMB/CIFS (TCP) - Main file sharing port
+    tcp445: 445
 
+# -- Environment variables
+# @default -- See `values.yaml`
 env:
-  - name: ADVERTISED_HOSTNAME
-    value: ""
-  - name: CUSTOM_SMB_CONF
-    value: "false"
-  - name: CUSTOM_USER
-    value: "false"
-  - name: DEBUG_LEVEL
-    value: "1"
-  - name: MIMIC_MODEL
-    value: "TimeCapsule8,119"
-  - name: EXTERNAL_CONF
-    value: ""
-  - name: HIDE_SHARES
-    value: "no"
-  - name: TM_USERNAME
-    value: "timemachine"
-  - name: TM_GROUPNAME
-    value: "timemachine"
-  - name: TM_UID
-    value: "1000"
-  - name: TM_GID
-    value: "1000"
-  - name: PASSWORD
-    value: "timemachine"
-  - name: SET_PERMISSIONS
-    value: "false"
-  - name: SHARE_NAME
-    value: "TimeMachine"
-  - name: SMB_INHERIT_PERMISSIONS
-    value: "no"
-  - name: SMB_NFS_ACES
-    value: "no"
-  - name: SMB_METADATA
-    value: "stream"
-  - name: SMB_PORT
-    value: "445"
-  - name: SMB_VFS_OBJECTS
-    value: "fruit streams_xattr"
-  - name: VOLUME_SIZE_LIMIT
-    value: "0"
-  - name: WORKGROUP
-    value: "WORKGROUP"
+  # -- Advertised hostname for Time Machine
+  # @default -- empty
+  ADVERTISED_HOSTNAME: ""
+  # -- Use custom SMB configuration
+  CUSTOM_SMB_CONF: "false"
+  # -- Use custom user configuration
+  CUSTOM_USER: "false"
+  # -- Debug level (0-10)
+  DEBUG_LEVEL: "1"
+  # -- Mimic Apple Time Capsule model
+  MIMIC_MODEL: "TimeCapsule8,119"
+  # -- External configuration file path
+  # @default -- empty
+  EXTERNAL_CONF: ""
+  # -- Hide shares from network
+  HIDE_SHARES: "no"
+  # -- Time Machine username
+  TM_USERNAME: "timemachine"
+  # -- Time Machine group name
+  TM_GROUPNAME: "timemachine"
+  # -- Time Machine user ID
+  TM_UID: "1000"
+  # -- Time Machine group ID
+  TM_GID: "1000"
+  # -- Password for Time Machine access (CHANGE THIS!)
+  # WARNING: This is a default password. You MUST change it in production!
+  PASSWORD: "timemachine"
+  # -- Set permissions on volume
+  SET_PERMISSIONS: "false"
+  # -- SMB share name
+  SHARE_NAME: "TimeMachine"
+  # -- Inherit permissions from volume
+  SMB_INHERIT_PERMISSIONS: "no"
+  # -- Use NFS ACLs
+  SMB_NFS_ACES: "no"
+  # -- SMB metadata handling
+  SMB_METADATA: "stream"
+  # -- SMB port
+  SMB_PORT: "445"
+  # -- SMB VFS objects
+  SMB_VFS_OBJECTS: "fruit streams_xattr"
+  # -- Volume size limit (0 = unlimited)
+  VOLUME_SIZE_LIMIT: "0"
+  # -- SMB workgroup name
+  WORKGROUP: "WORKGROUP"
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+# -- Additional environment variables (for complex values like valueFrom)
+# Use this for environment variables that need valueFrom or other complex structures
+# @default -- empty
+envExtra: []
+  # Example:
+  # - name: SECRET_KEY
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: my-secret
+  #       key: password
 
+# -- Resource limits and requests
+# @default -- See `values.yaml`
+resources:
+  # -- Resource limits
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  # -- Resource requests
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# -- Horizontal Pod Autoscaler configuration
+# @default -- See `values.yaml`
 autoscaling:
+  # -- Enable horizontal pod autoscaling
   enabled: false
+  # -- Minimum number of replicas
   minReplicas: 1
+  # -- Maximum number of replicas
   maxReplicas: 100
+  # -- Target CPU utilization percentage
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
+# -- Node selector for pod placement
+# @default -- See `values.yaml`
 nodeSelector: {}
 
+# -- Tolerations for pod scheduling
 tolerations: []
 
+# -- Affinity rules for pod scheduling
+# @default -- See `values.yaml`
 affinity: {}
 
+# -- Persistence configuration
+# @default -- See `values.yaml`
 persistence:
+  # -- Storage class for PVC
   # storageClass: ''
+  # -- Size of the persistent volume
   size: 500Gi
+  # -- Access mode for the persistent volume
   accessMode: ReadWriteOnce
+
+# -- Pod Disruption Budget configuration
+# @default -- See `values.yaml`
+podDisruptionBudget:
+  # -- Enable Pod Disruption Budget
+  enabled: false
+  # -- Minimum number of available pods (mutually exclusive with maxUnavailable)
+  # @default -- empty
+  minAvailable: ""
+  # -- Maximum number of unavailable pods (mutually exclusive with minAvailable)
+  # @default -- empty
+  maxUnavailable: ""
+
+# -- Network Policy configuration
+# @default -- See `values.yaml`
+networkPolicy:
+  # -- Enable Network Policy
+  enabled: false
+  # -- Ingress rules
+  # @default -- empty
+  ingress: []
+  # Example:
+  # - from:
+  #   - namespaceSelector:
+  #       matchLabels:
+  #         name: ingress-nginx
+  #   ports:
+  #   - protocol: TCP
+  #     port: 445
+  #   - protocol: UDP
+  #     port: 137
+  # - from:
+  #   - ipBlock:
+  #       cidr: 192.168.0.0/16
+  #   ports:
+  #   - protocol: TCP
+  #     port: 445
+  # -- Egress rules
+  # @default -- empty
+  egress: []
+  # Example:
+  # - to:
+  #   - namespaceSelector:
+  #       matchLabels:
+  #         name: dns
+  #   ports:
+  #   - protocol: UDP
+  #     port: 53

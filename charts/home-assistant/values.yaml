@@ -119,22 +119,32 @@ container:
   # -- Container port
   port: 8123
 
+# -- DNS policy for pods
+# @default -- "ClusterFirst"
+dnsPolicy: "ClusterFirst"
+
+# -- DNS configuration for pods
+# @default -- empty
+dnsConfig: {}
+
+# -- Termination grace period in seconds
+# @default -- empty
+terminationGracePeriodSeconds: ""
+
 # -- Environment variables
 env: []
 
 # -- Resource limits and requests
 # @default -- See `values.yaml`
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+resources:
+  # -- Resource limits
+  limits:
+    cpu: 2000m
+    memory: 2Gi
+  # -- Resource requests
+  requests:
+    cpu: 500m
+    memory: 512Mi
 
 # -- Horizontal Pod Autoscaler configuration
 # @default -- See `values.yaml`
@@ -250,6 +260,53 @@ serviceMonitor:
   # bearerTokenSecret:
   #   name: home-assistant-scrape-token
   #   key: token
+
+# -- Pod Disruption Budget configuration
+# @default -- See `values.yaml`
+podDisruptionBudget:
+  # -- Enable Pod Disruption Budget
+  enabled: false
+  # -- Minimum number of available pods (mutually exclusive with maxUnavailable)
+  # @default -- empty
+  minAvailable: ""
+  # -- Maximum number of unavailable pods (mutually exclusive with minAvailable)
+  # @default -- empty
+  maxUnavailable: ""
+
+# -- Network Policy configuration
+# @default -- See `values.yaml`
+networkPolicy:
+  # -- Enable Network Policy
+  enabled: false
+  # -- Ingress rules
+  # @default -- empty
+  ingress: []
+  # Example:
+  # - from:
+  #   - namespaceSelector:
+  #       matchLabels:
+  #         name: ingress-nginx
+  #   ports:
+  #   - protocol: TCP
+  #     port: 80
+  # - from:
+  #   - podSelector:
+  #       matchLabels:
+  #         app: monitoring
+  #   ports:
+  #   - protocol: TCP
+  #     port: 8123
+  # -- Egress rules
+  # @default -- empty
+  egress: []
+  # Example:
+  # - to:
+  #   - namespaceSelector:
+  #       matchLabels:
+  #         name: postgres
+  #   ports:
+  #   - protocol: TCP
+  #     port: 5432
 
 # -- PostgreSQL operator configuration
 # @default -- See `values.yaml`

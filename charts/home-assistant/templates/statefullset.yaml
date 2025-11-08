@@ -34,6 +34,10 @@ spec:
           {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -48,11 +52,19 @@ spec:
       dnsConfig:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      dnsPolicy: {{ .Values.dnsPolicy }}
+      dnsPolicy: {{ .Values.dnsPolicy | default "ClusterFirst" }}
       {{- if gt (len .Values.homeAssistant.secrets) 0 }}
       initContainers:
         - name: init-container
           image: alpine:3.18.5
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
           command: ['sh', '-c', 'echo "" > /etc/secrets/secrets.yaml && {{ $initCommand }}']
           volumeMounts:
           - name: secrets
@@ -68,6 +80,10 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           env:
             {{- with (concat .Values.env ) }}
                 {{- toYaml . | nindent 10 }}
