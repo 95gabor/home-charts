@@ -41,13 +41,13 @@ helm uninstall samba -n samba
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | See `values.yaml` | Affinity rules for pod scheduling (pod affinity/anti-affinity, node affinity) |
+| affinity | object | `{}` | Affinity rules for pod scheduling (pod affinity/anti-affinity, node affinity) |
 | autoscaling | object | See `values.yaml` | Horizontal Pod Autoscaler configuration |
 | autoscaling.enabled | bool | `false` | Enable Horizontal Pod Autoscaler to automatically scale pods based on metrics |
 | autoscaling.maxReplicas | int | `100` | Maximum number of pod replicas allowed |
 | autoscaling.minReplicas | int | `1` | Minimum number of pod replicas to maintain |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | Target CPU utilization percentage for autoscaling (0-100) |
-| dnsConfig | object | empty | DNS configuration for pods |
+| dnsConfig | object | `{}` | DNS configuration for pods |
 | dnsPolicy | string | `"ClusterFirst"` | DNS policy for pods |
 | env | object | See `values.yaml` | Environment variables |
 | env.ADVERTISED_HOSTNAME | string | empty | Advertised hostname for Time Machine |
@@ -84,18 +84,18 @@ helm uninstall samba -n samba
 | networkPolicy.egress | list | empty | Egress rules defining allowed outgoing traffic |
 | networkPolicy.enabled | bool | `false` | Enable Network Policy to control network traffic to/from pods |
 | networkPolicy.ingress | list | empty | Ingress rules defining allowed incoming traffic |
-| nodeSelector | object | See `values.yaml` | Node selector for pod placement (constrain pods to specific nodes) |
+| nodeSelector | object | `{}` | Node selector for pod placement (constrain pods to specific nodes) |
 | persistence | object | See `values.yaml` | Persistence configuration |
 | persistence.accessMode | string | `"ReadWriteOnce"` | Access mode for the persistent volume (ReadWriteOnce, ReadWriteMany, ReadOnlyMany) |
 | persistence.size | string | `"500Gi"` | Size of the persistent volume claim |
 | persistence.storageClass | string | empty | Storage class for PVC (empty = use default storage class) |
-| podAnnotations | object | See `values.yaml` | Pod annotations (metadata attached to pods) |
+| podAnnotations | object | `{}` | Pod annotations (metadata attached to pods) |
 | podDisruptionBudget | object | See `values.yaml` | Pod Disruption Budget configuration |
 | podDisruptionBudget.enabled | bool | `false` | Enable Pod Disruption Budget to control pod evictions during disruptions |
 | podDisruptionBudget.maxUnavailable | string | empty | Maximum number of unavailable pods during disruptions (mutually exclusive with minAvailable) |
 | podDisruptionBudget.minAvailable | string | empty | Minimum number of available pods during disruptions (mutually exclusive with maxUnavailable) |
-| podLabels | object | See `values.yaml` | Pod labels (metadata for pod selection and organization) |
-| podSecurityContext | object | See `values.yaml` | Pod security context (applies to all containers in the pod) |
+| podLabels | object | `{}` | Pod labels (metadata for pod selection and organization) |
+| podSecurityContext | object | `{}` | Pod security context (applies to all containers in the pod) |
 | replicaCount | int | `1` | Number of replicas for the Samba deployment |
 | resources | object | See `values.yaml` | Resource limits and requests |
 | resources.limits | object | See `values.yaml` | Resource limits |
@@ -104,7 +104,7 @@ helm uninstall samba -n samba
 | resources.requests | object | See `values.yaml` | Resource requests |
 | resources.requests.cpu | string | `"100m"` | CPU request for the container |
 | resources.requests.memory | string | `"128Mi"` | Memory request for the container |
-| securityContext | object | See `values.yaml` | Security context for the container (applies to the main container) |
+| securityContext | object | `{}` | Security context for the container (applies to the main container) |
 | service | object | See `values.yaml` | Service configuration |
 | service.ports | object | See `values.yaml` | Service ports configuration |
 | service.ports.tcp139 | int | `139` | NetBIOS Name Service port (TCP) - Used for NetBIOS name resolution |

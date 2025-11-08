@@ -41,7 +41,7 @@ helm uninstall home-assistant -n home-assistant
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | See `values.yaml` | Affinity rules for pod scheduling (pod affinity/anti-affinity, node affinity) |
+| affinity | object | `{}` | Affinity rules for pod scheduling (pod affinity/anti-affinity, node affinity) |
 | autoscaling | object | See `values.yaml` | Horizontal Pod Autoscaler configuration |
 | autoscaling.enabled | bool | `false` | Enable Horizontal Pod Autoscaler to automatically scale pods based on metrics |
 | autoscaling.maxReplicas | int | `100` | Maximum number of pod replicas allowed |
@@ -49,7 +49,7 @@ helm uninstall home-assistant -n home-assistant
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | Target CPU utilization percentage for autoscaling (0-100) |
 | certificate | object | See `values.yaml` | TLS certificate configuration via cert-manager |
 | certificate.additionalHosts | list | `[]` | Additional hostnames to include in the certificate (SAN entries) |
-| certificate.annotations | object | See `values.yaml` | Annotations to add to the Certificate resource |
+| certificate.annotations | object | `{}` | Annotations to add to the Certificate resource |
 | certificate.domain | string | `"home.example.com"` | Primary domain name for the TLS certificate |
 | certificate.duration | string | empty | Certificate validity duration (e.g., "2160h" for 90 days) |
 | certificate.enabled | bool | `false` | Enable automatic TLS certificate management using cert-manager |
@@ -67,7 +67,7 @@ helm uninstall home-assistant -n home-assistant
 | certificate.usages | list | `[]` | Certificate key usages (e.g., ["signing", "key encipherment", "server auth"]) |
 | container | object | See `values.yaml` | Container configuration |
 | container.port | int | `8123` | Port number the container listens on |
-| dnsConfig | object | empty | DNS configuration for pods |
+| dnsConfig | object | `{}` | DNS configuration for pods |
 | dnsPolicy | string | "ClusterFirst" | DNS policy for pods |
 | env | list | `[]` | Environment variables |
 | fullnameOverride | string | empty | Override the full name of the chart |
@@ -95,20 +95,20 @@ helm uninstall home-assistant -n home-assistant
 | networkPolicy.egress | list | empty | Egress rules defining allowed outgoing traffic |
 | networkPolicy.enabled | bool | `false` | Enable Network Policy to control network traffic to/from pods |
 | networkPolicy.ingress | list | empty | Ingress rules defining allowed incoming traffic |
-| nodeSelector | object | See `values.yaml` | Node selector for pod placement (constrain pods to specific nodes) |
+| nodeSelector | object | `{}` | Node selector for pod placement (constrain pods to specific nodes) |
 | persistence | object | See `values.yaml` | Persistence configuration |
 | persistence.accessMode | string | `"ReadWriteOnce"` | Access mode for the persistent volume (ReadWriteOnce, ReadWriteMany, ReadOnlyMany) |
 | persistence.size | string | `"4Gi"` | Size of the persistent volume claim |
 | persistence.storageClass | string | empty | Storage class for PVC (empty = use default storage class) |
-| podAnnotations | object | See `values.yaml` | Pod annotations (metadata attached to pods) |
+| podAnnotations | object | `{}` | Pod annotations (metadata attached to pods) |
 | podDisruptionBudget | object | See `values.yaml` | Pod Disruption Budget configuration |
 | podDisruptionBudget.enabled | bool | `false` | Enable Pod Disruption Budget to control pod evictions during disruptions |
 | podDisruptionBudget.maxUnavailable | string | empty | Maximum number of unavailable pods during disruptions (mutually exclusive with minAvailable) |
 | podDisruptionBudget.minAvailable | string | empty | Minimum number of available pods during disruptions (mutually exclusive with maxUnavailable) |
-| podLabels | object | See `values.yaml` | Pod labels (metadata for pod selection and organization) |
-| podSecurityContext | object | See `values.yaml` | Pod security context (applies to all containers in the pod) |
+| podLabels | object | `{}` | Pod labels (metadata for pod selection and organization) |
+| podSecurityContext | object | `{}` | Pod security context (applies to all containers in the pod) |
 | postgresOperator | object | See `values.yaml` | PostgreSQL operator configuration |
-| postgresOperator.annotations | object | See `values.yaml` | Annotations to add to PostgreSQL resources created by the operator |
+| postgresOperator.annotations | object | `{}` | Annotations to add to PostgreSQL resources created by the operator |
 | postgresOperator.databaseName | string | `"home-assistant"` | Name of the PostgreSQL database to create |
 | postgresOperator.dropOnDelete | bool | `false` | Whether to drop the database when the resource is deleted |
 | postgresOperator.enabled | bool | `false` | Enable PostgreSQL operator integration for automatic database provisioning |
@@ -125,14 +125,14 @@ helm uninstall home-assistant -n home-assistant
 | resources.requests | object | See `values.yaml` | Resource requests |
 | resources.requests.cpu | string | `"500m"` | CPU request for the container |
 | resources.requests.memory | string | `"512Mi"` | Memory request for the container |
-| securityContext | object | See `values.yaml` | Security context for the container (applies to the main container) |
+| securityContext | object | `{}` | Security context for the container (applies to the main container) |
 | service | object | See `values.yaml` | Service configuration |
 | service.port | int | `80` | Service port number exposed by the service |
 | service.portName | string | `"http"` | Name of the service port |
 | service.type | string | `"ClusterIP"` | Kubernetes service type (ClusterIP, NodePort, LoadBalancer) |
 | serviceMonitor | object | See `values.yaml` | ServiceMonitor configuration for Prometheus |
-| serviceMonitor.additionalLabels | object | See `values.yaml` | Additional labels to add to the ServiceMonitor |
-| serviceMonitor.annotations | object | See `values.yaml` | Annotations to add to the ServiceMonitor |
+| serviceMonitor.additionalLabels | object | `{}` | Additional labels to add to the ServiceMonitor |
+| serviceMonitor.annotations | object | `{}` | Annotations to add to the ServiceMonitor |
 | serviceMonitor.enabled | bool | `false` | Enable ServiceMonitor resource for Prometheus Operator |
 | serviceMonitor.interval | string | `"30s"` | Interval at which Prometheus should scrape metrics |
 | serviceMonitor.metricRelabelings | list | `[]` | Metric relabeling rules applied after scraping |
@@ -140,8 +140,8 @@ helm uninstall home-assistant -n home-assistant
 | serviceMonitor.relabelings | list | `[]` | Relabeling rules applied before scraping |
 | serviceMonitor.scheme | string | empty | Protocol scheme for scraping (http or https) |
 | serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout for metric scraping |
-| serviceMonitor.selector | object | See `values.yaml` | Service selector to match the service |
-| serviceMonitor.tlsConfig | object | See `values.yaml` | TLS configuration for secure scraping |
+| serviceMonitor.selector | object | `{}` | Service selector to match the service |
+| serviceMonitor.tlsConfig | object | `{}` | TLS configuration for secure scraping |
 | terminationGracePeriodSeconds | string | empty | Termination grace period in seconds |
 | tolerations | list | `[]` | Tolerations for pod scheduling (allow pods to be scheduled on tainted nodes) |
 

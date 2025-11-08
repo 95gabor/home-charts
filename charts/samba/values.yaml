@@ -26,19 +26,15 @@ nameOverride: ""
 fullnameOverride: ""
 
 # -- Pod annotations (metadata attached to pods)
-# @default -- See `values.yaml`
 podAnnotations: {}
 # -- Pod labels (metadata for pod selection and organization)
-# @default -- See `values.yaml`
 podLabels: {}
 
 # -- Pod security context (applies to all containers in the pod)
-# @default -- See `values.yaml`
 podSecurityContext: {}
   # fsGroup: 2000
 
 # -- Security context for the container (applies to the main container)
-# @default -- See `values.yaml`
 securityContext: {}
   # capabilities:
   #   drop:
@@ -54,7 +50,6 @@ hostNetwork: true
 dnsPolicy: "ClusterFirst"
 
 # -- DNS configuration for pods
-# @default -- empty
 dnsConfig: {}
 
 # -- Termination grace period in seconds
@@ -170,14 +165,12 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 # -- Node selector for pod placement (constrain pods to specific nodes)
-# @default -- See `values.yaml`
 nodeSelector: {}
 
 # -- Tolerations for pod scheduling (allow pods to be scheduled on tainted nodes)
 tolerations: []
 
 # -- Affinity rules for pod scheduling (pod affinity/anti-affinity, node affinity)
-# @default -- See `values.yaml`
 affinity: {}
 
 # -- Persistence configuration

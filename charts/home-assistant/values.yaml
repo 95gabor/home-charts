@@ -62,19 +62,15 @@ homeAssistant:
     #   subPath: POSTGRES_URL
 
 # -- Pod annotations (metadata attached to pods)
-# @default -- See `values.yaml`
 podAnnotations: {}
 # -- Pod labels (metadata for pod selection and organization)
-# @default -- See `values.yaml`
 podLabels: {}
 
 # -- Pod security context (applies to all containers in the pod)
-# @default -- See `values.yaml`
 podSecurityContext: {}
   # fsGroup: 2000
 
 # -- Security context for the container (applies to the main container)
-# @default -- See `values.yaml`
 securityContext: {}
   # capabilities:
   #   drop:
@@ -137,7 +133,6 @@ container:
 dnsPolicy: "ClusterFirst"
 
 # -- DNS configuration for pods
-# @default -- empty
 dnsConfig: {}
 
 # -- Termination grace period in seconds
@@ -179,14 +174,12 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 # -- Node selector for pod placement (constrain pods to specific nodes)
-# @default -- See `values.yaml`
 nodeSelector: {}
 
 # -- Tolerations for pod scheduling (allow pods to be scheduled on tainted nodes)
 tolerations: []
 
 # -- Affinity rules for pod scheduling (pod affinity/anti-affinity, node affinity)
-# @default -- See `values.yaml`
 affinity: {}
 
 # -- Persistence configuration
@@ -241,7 +234,6 @@ certificate:
     # -- Private key size in bits (for RSA: 2048, 4096; for ECDSA: 256, 384, 521)
     size: 2048
   # -- Annotations to add to the Certificate resource
-  # @default -- See `values.yaml`
   annotations: {}
   # -- Certificate key usages (e.g., ["signing", "key encipherment", "server auth"])
   usages: []
@@ -260,22 +252,18 @@ serviceMonitor:
   # -- Metric relabeling rules applied after scraping
   metricRelabelings: []
   # -- Service selector to match the service
-  # @default -- See `values.yaml`
   selector: {}
   # -- Protocol scheme for scraping (http or https)
   # @default -- empty
   scheme: ""
   # -- TLS configuration for secure scraping
-  # @default -- See `values.yaml`
   tlsConfig: {}
   # -- Namespace where the ServiceMonitor should be created
   # @default -- empty
   namespace: "" # "monitoring"
   # -- Additional labels to add to the ServiceMonitor
-  # @default -- See `values.yaml`
   additionalLabels: {}
   # -- Annotations to add to the ServiceMonitor
-  # @default -- See `values.yaml`
   annotations: {}
   # bearerTokenSecret:
   #   name: home-assistant-scrape-token
@@ -334,7 +322,6 @@ postgresOperator:
   # -- Enable PostgreSQL operator integration for automatic database provisioning
   enabled: false
   # -- Annotations to add to PostgreSQL resources created by the operator
-  # @default -- See `values.yaml`
   annotations: {}
   # -- Name of the PostgreSQL database to create
   databaseName: home-assistant
