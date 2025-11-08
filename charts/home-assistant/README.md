@@ -1,6 +1,6 @@
 # home-assistant
 
-![Version: 2.0.1](https://img.shields.io/badge/Version-2.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2025.11.1](https://img.shields.io/badge/AppVersion-2025.11.1-informational?style=flat-square)
+![Version: 2.1.0](https://img.shields.io/badge/Version-2.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2025.11.1](https://img.shields.io/badge/AppVersion-2025.11.1-informational?style=flat-square)
 
 A Helm chart for Home Assistant on Kubernetes
 
@@ -67,6 +67,8 @@ helm uninstall home-assistant -n home-assistant
 | certificate.usages | list | `[]` | Certificate usages |
 | container | object | See `values.yaml` | Container configuration |
 | container.port | int | `8123` | Container port |
+| dnsConfig | object | empty | DNS configuration for pods |
+| dnsPolicy | string | "ClusterFirst" | DNS policy for pods |
 | env | list | `[]` | Environment variables |
 | fullnameOverride | string | empty | Override the full name of the chart |
 | homeAssistant | object | See `values.yaml` | Home Assistant specific configuration |
@@ -89,11 +91,19 @@ helm uninstall home-assistant -n home-assistant
 | ingress.hosts | list | `[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}]` | Ingress hosts configuration |
 | ingress.tls | list | `[]` | TLS configuration for ingress |
 | nameOverride | string | empty | Override the name of the chart |
+| networkPolicy | object | See `values.yaml` | Network Policy configuration |
+| networkPolicy.egress | list | empty | Egress rules |
+| networkPolicy.enabled | bool | `false` | Enable Network Policy |
+| networkPolicy.ingress | list | empty | Ingress rules |
 | nodeSelector | object | See `values.yaml` | Node selector for pod placement |
 | persistence | object | See `values.yaml` | Persistence configuration |
 | persistence.accessMode | string | `"ReadWriteOnce"` | Access mode for the persistent volume |
 | persistence.size | string | `"4Gi"` | Size of the persistent volume |
 | podAnnotations | object | See `values.yaml` | Pod annotations |
+| podDisruptionBudget | object | See `values.yaml` | Pod Disruption Budget configuration |
+| podDisruptionBudget.enabled | bool | `false` | Enable Pod Disruption Budget |
+| podDisruptionBudget.maxUnavailable | string | empty | Maximum number of unavailable pods (mutually exclusive with minAvailable) |
+| podDisruptionBudget.minAvailable | string | empty | Minimum number of available pods (mutually exclusive with maxUnavailable) |
 | podLabels | object | See `values.yaml` | Pod labels |
 | podSecurityContext | object | See `values.yaml` | Pod security context |
 | postgresOperator | object | See `values.yaml` | PostgreSQL operator configuration |
@@ -108,6 +118,8 @@ helm uninstall home-assistant -n home-assistant
 | postgresOperator.secretName | string | `"home-assistant-database-credentials"` | Secret name for database credentials |
 | replicaCount | int | `1` | Number of replicas for the Home Assistant deployment |
 | resources | object | See `values.yaml` | Resource limits and requests |
+| resources.limits | object | `{"cpu":"2000m","memory":"2Gi"}` | Resource limits |
+| resources.requests | object | `{"cpu":"500m","memory":"512Mi"}` | Resource requests |
 | securityContext | object | See `values.yaml` | Security context for the container |
 | service | object | See `values.yaml` | Service configuration |
 | service.port | int | `80` | Service port |
@@ -125,6 +137,7 @@ helm uninstall home-assistant -n home-assistant
 | serviceMonitor.scrapeTimeout | string | `"10s"` | Scrape timeout |
 | serviceMonitor.selector | object | See `values.yaml` | Service selector |
 | serviceMonitor.tlsConfig | object | See `values.yaml` | TLS configuration |
+| terminationGracePeriodSeconds | string | empty | Termination grace period in seconds |
 | tolerations | list | `[]` | Tolerations for pod scheduling |
 
 ----------------------------------------------
