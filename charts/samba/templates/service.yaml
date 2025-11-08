@@ -8,15 +8,21 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: 139
+    - port: {{ .Values.service.ports.tcp139 }}
+      targetPort: tcp139
       name: tcp139
-    - port: 137
+      protocol: TCP
+    - port: {{ .Values.service.ports.udp137 }}
+      targetPort: udp137
       name: udp137
       protocol: UDP
-    - port: 138
+    - port: {{ .Values.service.ports.udp138 }}
+      targetPort: udp138
       name: udp138
       protocol: UDP
-    - port: 445
+    - port: {{ .Values.service.ports.tcp445 }}
+      targetPort: tcp445
       name: tcp445
+      protocol: TCP
   selector:
     {{- include "samba.selectorLabels" . | nindent 4 }}
