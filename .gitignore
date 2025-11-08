@@ -1,1 +1,34 @@
+# Backup files
 *.orig
+*.bak
+*.swp
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Helm
+*.tgz
+.helm/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Temporary files
+*.tmp
+*.log
+
+# Chart testing
+.ct/
+
+# Local test files
+test-values.yaml
+local-values.yaml
