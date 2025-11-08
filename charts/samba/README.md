@@ -1,6 +1,6 @@
 # samba
 
-![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
+![Version: 2.0.1](https://img.shields.io/badge/Version-2.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
 
 A Helm chart for Samba Time Machine on Kubernetes
 
@@ -41,14 +41,14 @@ helm uninstall samba -n samba
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | See `values.yaml` | Affinity rules for pod scheduling |
+| affinity | object | See `values.yaml` | Affinity rules for pod scheduling (pod affinity/anti-affinity, node affinity) |
 | autoscaling | object | See `values.yaml` | Horizontal Pod Autoscaler configuration |
-| autoscaling.enabled | bool | `false` | Enable horizontal pod autoscaling |
-| autoscaling.maxReplicas | int | `100` | Maximum number of replicas |
-| autoscaling.minReplicas | int | `1` | Minimum number of replicas |
-| autoscaling.targetCPUUtilizationPercentage | int | `80` | Target CPU utilization percentage |
+| autoscaling.enabled | bool | `false` | Enable Horizontal Pod Autoscaler to automatically scale pods based on metrics |
+| autoscaling.maxReplicas | int | `100` | Maximum number of pod replicas allowed |
+| autoscaling.minReplicas | int | `1` | Minimum number of pod replicas to maintain |
+| autoscaling.targetCPUUtilizationPercentage | int | `80` | Target CPU utilization percentage for autoscaling (0-100) |
 | dnsConfig | object | empty | DNS configuration for pods |
-| dnsPolicy | string | "ClusterFirst" | DNS policy for pods |
+| dnsPolicy | string | `"ClusterFirst"` | DNS policy for pods |
 | env | object | See `values.yaml` | Environment variables |
 | env.ADVERTISED_HOSTNAME | string | empty | Advertised hostname for Time Machine |
 | env.CUSTOM_SMB_CONF | string | `"false"` | Use custom SMB configuration |
@@ -75,40 +75,45 @@ helm uninstall samba -n samba
 | fullnameOverride | string | empty | Override the full name of the chart |
 | hostNetwork | bool | `true` | Use host network for the pod |
 | image | object | See `values.yaml` | Image configuration for Samba Time Machine |
-| image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
-| image.repository | string | `"mbentley/timemachine"` | Samba Time Machine image repository |
-| image.tag | string | empty | Overrides the image tag whose default is the chart appVersion. |
+| image.pullPolicy | string | `"IfNotPresent"` | Image pull policy (IfNotPresent, Always, Never) |
+| image.repository | string | `"mbentley/timemachine"` | Container image repository for Samba Time Machine |
+| image.tag | string | empty | Container image tag (overrides chart appVersion if set) |
 | imagePullSecrets | list | `[]` | Image pull secrets for private registries |
 | nameOverride | string | empty | Override the name of the chart |
 | networkPolicy | object | See `values.yaml` | Network Policy configuration |
-| networkPolicy.egress | list | empty | Egress rules |
-| networkPolicy.enabled | bool | `false` | Enable Network Policy |
-| networkPolicy.ingress | list | empty | Ingress rules |
-| nodeSelector | object | See `values.yaml` | Node selector for pod placement |
+| networkPolicy.egress | list | empty | Egress rules defining allowed outgoing traffic |
+| networkPolicy.enabled | bool | `false` | Enable Network Policy to control network traffic to/from pods |
+| networkPolicy.ingress | list | empty | Ingress rules defining allowed incoming traffic |
+| nodeSelector | object | See `values.yaml` | Node selector for pod placement (constrain pods to specific nodes) |
 | persistence | object | See `values.yaml` | Persistence configuration |
-| persistence.accessMode | string | `"ReadWriteOnce"` | Access mode for the persistent volume |
-| persistence.size | string | `"500Gi"` | Size of the persistent volume |
-| podAnnotations | object | See `values.yaml` | Pod annotations |
+| persistence.accessMode | string | `"ReadWriteOnce"` | Access mode for the persistent volume (ReadWriteOnce, ReadWriteMany, ReadOnlyMany) |
+| persistence.size | string | `"500Gi"` | Size of the persistent volume claim |
+| persistence.storageClass | string | empty | Storage class for PVC (empty = use default storage class) |
+| podAnnotations | object | See `values.yaml` | Pod annotations (metadata attached to pods) |
 | podDisruptionBudget | object | See `values.yaml` | Pod Disruption Budget configuration |
-| podDisruptionBudget.enabled | bool | `false` | Enable Pod Disruption Budget |
-| podDisruptionBudget.maxUnavailable | string | empty | Maximum number of unavailable pods (mutually exclusive with minAvailable) |
-| podDisruptionBudget.minAvailable | string | empty | Minimum number of available pods (mutually exclusive with maxUnavailable) |
-| podLabels | object | See `values.yaml` | Pod labels |
-| podSecurityContext | object | See `values.yaml` | Pod security context |
+| podDisruptionBudget.enabled | bool | `false` | Enable Pod Disruption Budget to control pod evictions during disruptions |
+| podDisruptionBudget.maxUnavailable | string | empty | Maximum number of unavailable pods during disruptions (mutually exclusive with minAvailable) |
+| podDisruptionBudget.minAvailable | string | empty | Minimum number of available pods during disruptions (mutually exclusive with maxUnavailable) |
+| podLabels | object | See `values.yaml` | Pod labels (metadata for pod selection and organization) |
+| podSecurityContext | object | See `values.yaml` | Pod security context (applies to all containers in the pod) |
 | replicaCount | int | `1` | Number of replicas for the Samba deployment |
 | resources | object | See `values.yaml` | Resource limits and requests |
-| resources.limits | object | `{"cpu":"500m","memory":"512Mi"}` | Resource limits |
-| resources.requests | object | `{"cpu":"100m","memory":"128Mi"}` | Resource requests |
-| securityContext | object | See `values.yaml` | Security context for the container |
+| resources.limits | object | See `values.yaml` | Resource limits |
+| resources.limits.cpu | string | `"500m"` | CPU limit for the container |
+| resources.limits.memory | string | `"512Mi"` | Memory limit for the container |
+| resources.requests | object | See `values.yaml` | Resource requests |
+| resources.requests.cpu | string | `"100m"` | CPU request for the container |
+| resources.requests.memory | string | `"128Mi"` | Memory request for the container |
+| securityContext | object | See `values.yaml` | Security context for the container (applies to the main container) |
 | service | object | See `values.yaml` | Service configuration |
 | service.ports | object | See `values.yaml` | Service ports configuration |
-| service.ports.tcp139 | int | `139` | NetBIOS Name Service (TCP) |
-| service.ports.tcp445 | int | `445` | SMB/CIFS (TCP) - Main file sharing port |
-| service.ports.udp137 | int | `137` | NetBIOS Name Service (UDP) |
-| service.ports.udp138 | int | `138` | NetBIOS Datagram Service (UDP) |
-| service.type | string | `"ClusterIP"` | Service type |
+| service.ports.tcp139 | int | `139` | NetBIOS Name Service port (TCP) - Used for NetBIOS name resolution |
+| service.ports.tcp445 | int | `445` | SMB/CIFS port (TCP) - Main file sharing port for SMB protocol |
+| service.ports.udp137 | int | `137` | NetBIOS Name Service port (UDP) - Used for NetBIOS name resolution |
+| service.ports.udp138 | int | `138` | NetBIOS Datagram Service port (UDP) - Used for NetBIOS datagram service |
+| service.type | string | `"ClusterIP"` | Kubernetes service type (ClusterIP, NodePort, LoadBalancer) |
 | terminationGracePeriodSeconds | string | empty | Termination grace period in seconds |
-| tolerations | list | `[]` | Tolerations for pod scheduling |
+| tolerations | list | `[]` | Tolerations for pod scheduling (allow pods to be scheduled on tainted nodes) |
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)

@@ -8,11 +8,11 @@ replicaCount: 1
 # -- Image configuration for Samba Time Machine
 # @default -- See `values.yaml`
 image:
-  # -- Samba Time Machine image repository
+  # -- Container image repository for Samba Time Machine
   repository: mbentley/timemachine
-  # -- Image pull policy
+  # -- Image pull policy (IfNotPresent, Always, Never)
   pullPolicy: IfNotPresent
-  # -- Overrides the image tag whose default is the chart appVersion.
+  # -- Container image tag (overrides chart appVersion if set)
   # @default -- empty
   tag: ""
 
@@ -25,19 +25,19 @@ nameOverride: ""
 # @default -- empty
 fullnameOverride: ""
 
-# -- Pod annotations
+# -- Pod annotations (metadata attached to pods)
 # @default -- See `values.yaml`
 podAnnotations: {}
-# -- Pod labels
+# -- Pod labels (metadata for pod selection and organization)
 # @default -- See `values.yaml`
 podLabels: {}
 
-# -- Pod security context
+# -- Pod security context (applies to all containers in the pod)
 # @default -- See `values.yaml`
 podSecurityContext: {}
   # fsGroup: 2000
 
-# -- Security context for the container
+# -- Security context for the container (applies to the main container)
 # @default -- See `values.yaml`
 securityContext: {}
   # capabilities:
@@ -51,7 +51,6 @@ securityContext: {}
 hostNetwork: true
 
 # -- DNS policy for pods
-# @default -- "ClusterFirst"
 dnsPolicy: "ClusterFirst"
 
 # -- DNS configuration for pods
@@ -65,18 +64,18 @@ terminationGracePeriodSeconds: ""
 # -- Service configuration
 # @default -- See `values.yaml`
 service:
-  # -- Service type
+  # -- Kubernetes service type (ClusterIP, NodePort, LoadBalancer)
   type: ClusterIP
   # -- Service ports configuration
   # @default -- See `values.yaml`
   ports:
-    # -- NetBIOS Name Service (TCP)
+    # -- NetBIOS Name Service port (TCP) - Used for NetBIOS name resolution
     tcp139: 139
-    # -- NetBIOS Name Service (UDP)
+    # -- NetBIOS Name Service port (UDP) - Used for NetBIOS name resolution
     udp137: 137
-    # -- NetBIOS Datagram Service (UDP)
+    # -- NetBIOS Datagram Service port (UDP) - Used for NetBIOS datagram service
     udp138: 138
-    # -- SMB/CIFS (TCP) - Main file sharing port
+    # -- SMB/CIFS port (TCP) - Main file sharing port for SMB protocol
     tcp445: 445
 
 # -- Environment variables
@@ -143,66 +142,73 @@ envExtra: []
 # @default -- See `values.yaml`
 resources:
   # -- Resource limits
+  # @default -- See `values.yaml`
   limits:
+    # -- CPU limit for the container
     cpu: 500m
+    # -- Memory limit for the container
     memory: 512Mi
   # -- Resource requests
+  # @default -- See `values.yaml`
   requests:
+    # -- CPU request for the container
     cpu: 100m
+    # -- Memory request for the container
     memory: 128Mi
 
 # -- Horizontal Pod Autoscaler configuration
 # @default -- See `values.yaml`
 autoscaling:
-  # -- Enable horizontal pod autoscaling
+  # -- Enable Horizontal Pod Autoscaler to automatically scale pods based on metrics
   enabled: false
-  # -- Minimum number of replicas
+  # -- Minimum number of pod replicas to maintain
   minReplicas: 1
-  # -- Maximum number of replicas
+  # -- Maximum number of pod replicas allowed
   maxReplicas: 100
-  # -- Target CPU utilization percentage
+  # -- Target CPU utilization percentage for autoscaling (0-100)
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-# -- Node selector for pod placement
+# -- Node selector for pod placement (constrain pods to specific nodes)
 # @default -- See `values.yaml`
 nodeSelector: {}
 
-# -- Tolerations for pod scheduling
+# -- Tolerations for pod scheduling (allow pods to be scheduled on tainted nodes)
 tolerations: []
 
-# -- Affinity rules for pod scheduling
+# -- Affinity rules for pod scheduling (pod affinity/anti-affinity, node affinity)
 # @default -- See `values.yaml`
 affinity: {}
 
 # -- Persistence configuration
 # @default -- See `values.yaml`
 persistence:
-  # -- Storage class for PVC
-  # storageClass: ''
-  # -- Size of the persistent volume
+  # -- Storage class for PVC (empty = use default storage class)
+  # @default -- empty
+  storageClass: ""
+  # -- Size of the persistent volume claim
   size: 500Gi
-  # -- Access mode for the persistent volume
+  # -- Access mode for the persistent volume (ReadWriteOnce, ReadWriteMany, ReadOnlyMany)
   accessMode: ReadWriteOnce
 
 # -- Pod Disruption Budget configuration
 # @default -- See `values.yaml`
 podDisruptionBudget:
-  # -- Enable Pod Disruption Budget
+  # -- Enable Pod Disruption Budget to control pod evictions during disruptions
   enabled: false
-  # -- Minimum number of available pods (mutually exclusive with maxUnavailable)
+  # -- Minimum number of available pods during disruptions (mutually exclusive with maxUnavailable)
   # @default -- empty
   minAvailable: ""
-  # -- Maximum number of unavailable pods (mutually exclusive with minAvailable)
+  # -- Maximum number of unavailable pods during disruptions (mutually exclusive with minAvailable)
   # @default -- empty
   maxUnavailable: ""
 
 # -- Network Policy configuration
 # @default -- See `values.yaml`
 networkPolicy:
-  # -- Enable Network Policy
+  # -- Enable Network Policy to control network traffic to/from pods
   enabled: false
-  # -- Ingress rules
+  # -- Ingress rules defining allowed incoming traffic
   # @default -- empty
   ingress: []
   # Example:
@@ -221,7 +227,7 @@ networkPolicy:
   #   ports:
   #   - protocol: TCP
   #     port: 445
-  # -- Egress rules
+  # -- Egress rules defining allowed outgoing traffic
   # @default -- empty
   egress: []
   # Example:

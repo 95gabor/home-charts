@@ -8,11 +8,11 @@ replicaCount: 1
 # -- Image configuration for Home Assistant
 # @default -- See `values.yaml`
 image:
-  # -- Home Assistant image repository
+  # -- Container image repository for Home Assistant
   repository: homeassistant/home-assistant
-  # -- Image pull policy
+  # -- Image pull policy (IfNotPresent, Always, Never)
   pullPolicy: IfNotPresent
-  # -- Overrides the image tag whose default is the chart appVersion.
+  # -- Container image tag (overrides chart appVersion if set)
   # @default -- empty
   tag: ""
 
@@ -28,12 +28,13 @@ fullnameOverride: ""
 # -- Home Assistant specific configuration
 # @default -- See `values.yaml`
 homeAssistant:
-  # -- Timezone for Home Assistant
+  # -- Timezone for Home Assistant (IANA timezone database name)
   timezone: Europe/Budapest
-  # -- Home Assistant configuration files
+  # -- Home Assistant configuration files (mounted as ConfigMap)
   # @default -- See `values.yaml`
   configurations:
     # -- Main configuration.yaml content
+    # @default -- See `values.yaml`
     configuration.yaml: |
       default_config:
 
@@ -42,12 +43,15 @@ homeAssistant:
       scene: !include scenes.yaml
       # automation: !include automations.yaml
     # -- Groups configuration
+    # @default -- See `values.yaml`
     groups.yaml: |
       # place your groups here
     # -- Scripts configuration
+    # @default -- See `values.yaml`
     scripts.yaml: |
       # place your scripts here
     # -- Scenes configuration
+    # @default -- See `values.yaml`
     scenes.yaml: |
       # place your scenes here
   # -- Secrets configuration for Home Assistant
@@ -57,19 +61,19 @@ homeAssistant:
     #   secretName: home-assistant-database-credentials
     #   subPath: POSTGRES_URL
 
-# -- Pod annotations
+# -- Pod annotations (metadata attached to pods)
 # @default -- See `values.yaml`
 podAnnotations: {}
-# -- Pod labels
+# -- Pod labels (metadata for pod selection and organization)
 # @default -- See `values.yaml`
 podLabels: {}
 
-# -- Pod security context
+# -- Pod security context (applies to all containers in the pod)
 # @default -- See `values.yaml`
 podSecurityContext: {}
   # fsGroup: 2000
 
-# -- Security context for the container
+# -- Security context for the container (applies to the main container)
 # @default -- See `values.yaml`
 securityContext: {}
   # capabilities:
@@ -82,32 +86,41 @@ securityContext: {}
 # -- Service configuration
 # @default -- See `values.yaml`
 service:
-  # -- Service type
+  # -- Kubernetes service type (ClusterIP, NodePort, LoadBalancer)
   type: ClusterIP
-  # -- Service port
+  # -- Service port number exposed by the service
   port: 80
-  # -- Service port name
+  # -- Name of the service port
   portName: http
 
 # -- Ingress configuration
 # @default -- See `values.yaml`
 ingress:
-  # -- Enable ingress
+  # -- Enable ingress resource creation
   enabled: false
-  # -- Ingress class name
+  # -- Ingress class name (e.g., nginx, traefik)
   # @default -- empty
   className: ""
-  # -- Ingress annotations
+  # -- Ingress annotations (e.g., for cert-manager, nginx settings)
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   # -- Ingress hosts configuration
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  # -- TLS configuration for ingress
+  # Each host can be configured with a single path (using 'path' and 'pathType')
+  # or multiple paths (using 'paths' array). If 'paths' is specified, it takes precedence.
+  hosts: []
+  # Example with single path:
+  # - host: home-assistant.example.com
+  #   path: /
+  #   pathType: Prefix
+  # Example with multiple paths:
+  # - host: home-assistant.example.com
+  #   paths:
+  #     - path: /api
+  #       pathType: Prefix
+  #     - path: /
+  #       pathType: Prefix
+  # -- TLS configuration for ingress (certificate secrets)
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -116,7 +129,7 @@ ingress:
 # -- Container configuration
 # @default -- See `values.yaml`
 container:
-  # -- Container port
+  # -- Port number the container listens on
   port: 8123
 
 # -- DNS policy for pods
@@ -138,123 +151,130 @@ env: []
 # @default -- See `values.yaml`
 resources:
   # -- Resource limits
+  # @default -- See `values.yaml`
   limits:
+    # -- CPU limit for the container
     cpu: 2000m
+    # -- Memory limit for the container
     memory: 2Gi
   # -- Resource requests
+  # @default -- See `values.yaml`
   requests:
+    # -- CPU request for the container
     cpu: 500m
+    # -- Memory request for the container
     memory: 512Mi
 
 # -- Horizontal Pod Autoscaler configuration
 # @default -- See `values.yaml`
 autoscaling:
-  # -- Enable horizontal pod autoscaling
+  # -- Enable Horizontal Pod Autoscaler to automatically scale pods based on metrics
   enabled: false
-  # -- Minimum number of replicas
+  # -- Minimum number of pod replicas to maintain
   minReplicas: 1
-  # -- Maximum number of replicas
+  # -- Maximum number of pod replicas allowed
   maxReplicas: 100
-  # -- Target CPU utilization percentage
+  # -- Target CPU utilization percentage for autoscaling (0-100)
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-# -- Node selector for pod placement
+# -- Node selector for pod placement (constrain pods to specific nodes)
 # @default -- See `values.yaml`
 nodeSelector: {}
 
-# -- Tolerations for pod scheduling
+# -- Tolerations for pod scheduling (allow pods to be scheduled on tainted nodes)
 tolerations: []
 
-# -- Affinity rules for pod scheduling
+# -- Affinity rules for pod scheduling (pod affinity/anti-affinity, node affinity)
 # @default -- See `values.yaml`
 affinity: {}
 
 # -- Persistence configuration
 # @default -- See `values.yaml`
 persistence:
-  # -- Storage class for PVC
-  # storageClass: ''
-  # -- Size of the persistent volume
+  # -- Storage class for PVC (empty = use default storage class)
+  # @default -- empty
+  storageClass: ""
+  # -- Size of the persistent volume claim
   size: 4Gi
-  # -- Access mode for the persistent volume
+  # -- Access mode for the persistent volume (ReadWriteOnce, ReadWriteMany, ReadOnlyMany)
   accessMode: ReadWriteOnce
 
 # -- TLS certificate configuration via cert-manager
 # @default -- See `values.yaml`
 certificate:
-  # -- Enable certificate management
+  # -- Enable automatic TLS certificate management using cert-manager
   enabled: false
-  # -- Secret name for the TLS certificate
+  # -- Kubernetes secret name where the TLS certificate will be stored
   secretName: home-assistant-tls
-  # -- Domain name for the certificate
+  # -- Primary domain name for the TLS certificate
   domain: home.example.com
-  # -- Additional hosts for the certificate
+  # -- Additional hostnames to include in the certificate (SAN entries)
   additionalHosts: []
-  # -- Certificate duration
+  # -- Certificate validity duration (e.g., "2160h" for 90 days)
   # @default -- empty
   duration: ""
-  # -- Certificate renewal time before expiry
+  # -- Time before certificate expiry to start renewal (e.g., "720h" for 30 days)
   # @default -- empty
   renewBefore: ""
   # -- Certificate issuer configuration
   # @default -- See `values.yaml`
   issuer:
-    # -- Issuer group
+    # -- API group of the issuer resource (e.g., "cert-manager.io")
     # @default -- empty
     group: ""
-    # -- Issuer kind
+    # -- Kind of the issuer resource (Issuer or ClusterIssuer)
     # @default -- empty
     kind: ""
-    # -- Issuer name
+    # -- Name of the issuer resource
     # @default -- empty
     name: ""
   # -- Private key configuration
   # @default -- See `values.yaml`
   privateKey:
-    # -- Private key rotation policy
+    # -- Private key rotation policy (Never, Always, OnKeyRotation)
     rotationPolicy: Never
-    # -- Private key encoding
+    # -- Private key encoding format (PKCS1 or PKCS8)
     encoding: PKCS1
-    # -- Private key algorithm
+    # -- Private key algorithm (RSA or ECDSA)
     algorithm: RSA
-    # -- Private key size
+    # -- Private key size in bits (for RSA: 2048, 4096; for ECDSA: 256, 384, 521)
     size: 2048
-  # -- Certificate annotations
+  # -- Annotations to add to the Certificate resource
   # @default -- See `values.yaml`
   annotations: {}
-  # -- Certificate usages
+  # -- Certificate key usages (e.g., ["signing", "key encipherment", "server auth"])
   usages: []
 
 # -- ServiceMonitor configuration for Prometheus
 # @default -- See `values.yaml`
 serviceMonitor:
-  # -- Enable ServiceMonitor
+  # -- Enable ServiceMonitor resource for Prometheus Operator
   enabled: false
-  # -- Scrape interval
+  # -- Interval at which Prometheus should scrape metrics
   interval: 30s
-  # -- Scrape timeout
+  # -- Timeout for metric scraping
   scrapeTimeout: 10s
-  # -- Relabeling configuration
+  # -- Relabeling rules applied before scraping
   relabelings: []
-  # -- Metric relabeling configuration
+  # -- Metric relabeling rules applied after scraping
   metricRelabelings: []
-  # -- Service selector
+  # -- Service selector to match the service
   # @default -- See `values.yaml`
   selector: {}
-  # -- Service scheme
+  # -- Protocol scheme for scraping (http or https)
   # @default -- empty
   scheme: ""
-  # -- TLS configuration
+  # -- TLS configuration for secure scraping
   # @default -- See `values.yaml`
   tlsConfig: {}
-  # -- Namespace for ServiceMonitor
+  # -- Namespace where the ServiceMonitor should be created
   # @default -- empty
   namespace: "" # "monitoring"
-  # -- Additional labels for ServiceMonitor
+  # -- Additional labels to add to the ServiceMonitor
   # @default -- See `values.yaml`
   additionalLabels: {}
-  # -- Annotations for ServiceMonitor
+  # -- Annotations to add to the ServiceMonitor
   # @default -- See `values.yaml`
   annotations: {}
   # bearerTokenSecret:
@@ -264,21 +284,21 @@ serviceMonitor:
 # -- Pod Disruption Budget configuration
 # @default -- See `values.yaml`
 podDisruptionBudget:
-  # -- Enable Pod Disruption Budget
+  # -- Enable Pod Disruption Budget to control pod evictions during disruptions
   enabled: false
-  # -- Minimum number of available pods (mutually exclusive with maxUnavailable)
+  # -- Minimum number of available pods during disruptions (mutually exclusive with maxUnavailable)
   # @default -- empty
   minAvailable: ""
-  # -- Maximum number of unavailable pods (mutually exclusive with minAvailable)
+  # -- Maximum number of unavailable pods during disruptions (mutually exclusive with minAvailable)
   # @default -- empty
   maxUnavailable: ""
 
 # -- Network Policy configuration
 # @default -- See `values.yaml`
 networkPolicy:
-  # -- Enable Network Policy
+  # -- Enable Network Policy to control network traffic to/from pods
   enabled: false
-  # -- Ingress rules
+  # -- Ingress rules defining allowed incoming traffic
   # @default -- empty
   ingress: []
   # Example:
@@ -296,7 +316,7 @@ networkPolicy:
   #   ports:
   #   - protocol: TCP
   #     port: 8123
-  # -- Egress rules
+  # -- Egress rules defining allowed outgoing traffic
   # @default -- empty
   egress: []
   # Example:
@@ -311,24 +331,24 @@ networkPolicy:
 # -- PostgreSQL operator configuration
 # @default -- See `values.yaml`
 postgresOperator:
-  # -- Enable PostgreSQL operator integration
+  # -- Enable PostgreSQL operator integration for automatic database provisioning
   enabled: false
-  # -- Annotations for PostgreSQL resources
+  # -- Annotations to add to PostgreSQL resources created by the operator
   # @default -- See `values.yaml`
   annotations: {}
-  # -- Database name
+  # -- Name of the PostgreSQL database to create
   databaseName: home-assistant
-  # -- Drop database on delete
+  # -- Whether to drop the database when the resource is deleted
   dropOnDelete: false
-  # -- Master role name
+  # -- Master role name for the database
   masterRole: home-assistant
-  # -- Database schema
+  # -- Database schema name
   schema: home-assistant
-  # -- Database role
+  # -- Database role name for application access
   role: home-assistant
-  # -- Secret name for database credentials
+  # -- Kubernetes secret name where database credentials will be stored
   secretName: home-assistant-database-credentials
-  # -- Database privileges
+  # -- Database privileges granted to the role (OWNER, READ, WRITE)
   privileges: OWNER
 #  secretTemplate:       # Output secrets can be customized using standard Go templates
 #    POSTGRES_URL: "postgresql://{{.Role}}:{{.Password}}@{{.Host}}/{{.Database}}"
