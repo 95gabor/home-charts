@@ -53,9 +53,17 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           env:
+            {{- $envExtraNames := dict }}
+            {{- if .Values.envExtra }}
+            {{- range .Values.envExtra }}
+            {{- $_ := set $envExtraNames .name true }}
+            {{- end }}
+            {{- end }}
             {{- range $key, $value := .Values.env }}
+            {{- if not (hasKey $envExtraNames $key) }}
             - name: {{ $key | quote }}
               value: {{ $value | quote }}
+            {{- end }}
             {{- end }}
             {{- if .Values.envExtra }}
             {{- range .Values.envExtra }}

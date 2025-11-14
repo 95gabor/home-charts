@@ -128,9 +128,16 @@ env:
 
 # -- Additional environment variables (for complex values like valueFrom)
 # Use this for environment variables that need valueFrom or other complex structures
+# Variables defined here will override variables with the same name from `env`
 # @default -- empty
 envExtra: []
-  # Example:
+  # Example: Override PASSWORD from a secret
+  # - name: PASSWORD
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: samba-secret
+  #       key: password
+  # Example: Add a new variable from a secret
   # - name: SECRET_KEY
   #   valueFrom:
   #     secretKeyRef:
