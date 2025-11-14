@@ -1335,6 +1335,17 @@ entries:
   samba:
   - apiVersion: v2
     appVersion: latest
+    created: "2025-11-14T18:50:53.424581588Z"
+    description: A Helm chart for Samba Time Machine on Kubernetes
+    digest: 687ce8b2ac9c861356b17da492c651ac04b07e185c4cbd6d0f4b09860c5bfff3
+    icon: https://www.samba.org/samba/img/samba-logo.png
+    name: samba
+    type: application
+    urls:
+    - https://github.com/95gabor/home-charts/releases/download/samba-3.0.0/samba-3.0.0.tgz
+    version: 3.0.0
+  - apiVersion: v2
+    appVersion: latest
     created: "2025-11-14T17:37:30.420005909Z"
     description: A Helm chart for Samba Time Machine on Kubernetes
     digest: 3f337ebb9384502fe6061dd2fbd79b212cbf97bda175f47559861d0f215f9dd5
@@ -1387,4 +1398,4 @@ entries:
     urls:
     - https://github.com/95gabor/home-charts/releases/download/samba-0.0.1/samba-0.0.1.tgz
     version: 0.0.1
-generated: "2025-11-14T17:37:30.420239635Z"
+generated: "2025-11-14T18:50:53.424825264Z"
