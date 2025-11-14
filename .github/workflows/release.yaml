@@ -38,28 +38,12 @@ jobs:
         with:
           version: v3.12.0
 
-      - name: Install chart-releaser
-        run: |
-          curl -sSLo cr.tar.gz "https://github.com/helm/chart-releaser/releases/download/v1.5.0/chart-releaser_1.5.0_linux_amd64.tar.gz"
-          tar -xzf cr.tar.gz
-          sudo mv cr /usr/local/bin/cr
-          rm cr.tar.gz
-
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.5.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           CR_GENERATE_RELEASE_NOTES: true
-        continue-on-error: true
-
-      - name: Upload charts with skip-existing
-        if: failure()
-        env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          CR_GENERATE_RELEASE_NOTES: true
-          GITHUB_REPOSITORY: ${{ github.repository }}
-        run: |
-          cr upload --skip-existing
+          CR_SKIP_EXISTING: "true"
 
       # see https://github.com/helm/chart-releaser/issues/183
       - name: Login to GitHub Container Registry
