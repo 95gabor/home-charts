@@ -82,8 +82,8 @@ spec:
                 {{- toYaml . | nindent 10 }}
             {{- end }}
           volumeMounts:
-            - name: tm
-              mountPath: /opt/timemachine
+            - name: shares
+              mountPath: /shares
             - name: var-lib-samba
               mountPath: /var/lib/samba
             - name: var-cache-samba
@@ -120,7 +120,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
-        - name: tm
+        - name: shares
           persistentVolumeClaim:
             claimName: {{ include "samba.fullname" . }}
         - name: var-lib-samba

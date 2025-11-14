@@ -9,7 +9,7 @@ replicaCount: 1
 # @default -- See `values.yaml`
 image:
   # -- Container image repository for Samba Time Machine
-  repository: mbentley/timemachine
+  repository: ghcr.io/servercontainers/samba
   # -- Image pull policy (IfNotPresent, Always, Never)
   pullPolicy: IfNotPresent
   # -- Container image tag (overrides chart appVersion if set)
@@ -80,59 +80,66 @@ service:
 # -- Environment variables
 # @default -- See `values.yaml`
 env:
-  # -- Advertised hostname for Time Machine
+  # -- Account username for Samba access
+  # Format: ACCOUNT_username (e.g., ACCOUNT_timemachine)
   # @default -- empty
-  ADVERTISED_HOSTNAME: ""
-  # -- Use custom SMB configuration
-  CUSTOM_SMB_CONF: "false"
-  # -- Use custom user configuration
-  CUSTOM_USER: "false"
-  # -- Debug level (0-10)
-  DEBUG_LEVEL: "1"
-  # -- Mimic Apple Time Capsule model
-  MIMIC_MODEL: "TimeCapsule8,119"
-  # -- External configuration file path
-  # @default -- empty
-  EXTERNAL_CONF: ""
-  # -- Hide shares from network
-  HIDE_SHARES: "no"
-  # -- Time Machine username
-  TM_USERNAME: "timemachine"
-  # -- Time Machine group name
-  TM_GROUPNAME: "timemachine"
-  # -- Time Machine user ID
-  TM_UID: "1000"
-  # -- Time Machine group ID
-  TM_GID: "1000"
-  # -- Password for Time Machine access (CHANGE THIS!)
+  ACCOUNT_timemachine: "timemachine"
+  # -- Password for the account (CHANGE THIS!)
+  # Format: PASSWORD_username (e.g., PASSWORD_timemachine)
   # WARNING: This is a default password. You MUST change it in production!
-  PASSWORD: "timemachine"
-  # -- Set permissions on volume
-  SET_PERMISSIONS: "false"
-  # -- SMB share name
-  SHARE_NAME: "TimeMachine"
-  # -- Inherit permissions from volume
-  SMB_INHERIT_PERMISSIONS: "no"
-  # -- Use NFS ACLs
-  SMB_NFS_ACES: "no"
-  # -- SMB metadata handling
-  SMB_METADATA: "stream"
-  # -- SMB port
-  SMB_PORT: "445"
-  # -- SMB VFS objects
-  SMB_VFS_OBJECTS: "fruit streams_xattr"
-  # -- Volume size limit (0 = unlimited)
-  VOLUME_SIZE_LIMIT: "0"
-  # -- SMB workgroup name
-  WORKGROUP: "WORKGROUP"
+  PASSWORD_timemachine: "timemachine"
+  # -- User ID for the account
+  # Format: UID_username (e.g., UID_timemachine)
+  # @default -- empty
+  UID_timemachine: "1000"
+  # -- Group ID for the account
+  # Format: GID_username (e.g., GID_timemachine)
+  # @default -- empty
+  GID_timemachine: "1000"
+  # -- Time Machine model value for Avahi service
+  # Available options: TimeCapsule, Xserve, PowerBook, PowerMac, Macmini, iMac, MacBook, MacBookPro, MacBookAir, MacPro, MacPro6,1, MacPro7,1, etc.
+  MODEL: "TimeCapsule"
+  # -- Avahi service name (default: hostname)
+  # @default -- empty
+  AVAHI_NAME: ""
+  # -- Disable Avahi service (set to any value to disable)
+  # @default -- empty
+  AVAHI_DISABLE: ""
+  # -- Samba server role (default: standalone server)
+  # Note: $ is an invalid symbol in this env
+  SAMBA_CONF_SERVER_ROLE: "standalone server"
+  # -- Samba log level (default: 1)
+  SAMBA_CONF_LOG_LEVEL: "1"
+  # -- Samba workgroup name
+  SAMBA_CONF_WORKGROUP: "WORKGROUP"
+  # -- Samba server string
+  SAMBA_CONF_SERVER_STRING: "Samba Server"
+  # -- Samba map to guest setting
+  SAMBA_CONF_MAP_TO_GUEST: "Bad User"
+  # -- Samba volume configuration
+  # Format: SAMBA_VOLUME_CONFIG_myconfigname
+  # For Time Machine, add: fruit:time machine = yes
+  # Use ; to separate multiple lines (automatically translated to \n)
+  # Example: path = /shares/timemachine; fruit:time machine = yes; fruit:time machine max size = 500G
+  # @default -- empty
+  SAMBA_VOLUME_CONFIG_timemachine: "path = /shares/timemachine; fruit:time machine = yes; valid users = timemachine"
+  # -- Disable wsdd2 service (set to any value to disable)
+  # @default -- empty
+  WSDD2_DISABLE: ""
+  # -- wsdd2 parameters
+  # @default -- empty
+  WSDD2_PARAMETERS: ""
+  # -- Disable NetBIOS (set to any value to disable, not recommended)
+  # @default -- empty
+  NETBIOS_DISABLE: ""
 
 # -- Additional environment variables (for complex values like valueFrom)
 # Use this for environment variables that need valueFrom or other complex structures
 # Variables defined here will override variables with the same name from `env`
 # @default -- empty
 envExtra: []
-  # Example: Override PASSWORD from a secret
-  # - name: PASSWORD
+  # Example: Override PASSWORD_timemachine from a secret
+  # - name: PASSWORD_timemachine
   #   valueFrom:
   #     secretKeyRef:
   #       name: samba-secret

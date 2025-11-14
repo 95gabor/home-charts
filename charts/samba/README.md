@@ -1,6 +1,6 @@
 # samba
 
-![Version: 2.2.0](https://img.shields.io/badge/Version-2.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
+![Version: 3.0.0](https://img.shields.io/badge/Version-3.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
 
 A Helm chart for Samba Time Machine on Kubernetes
 
@@ -50,33 +50,28 @@ helm uninstall samba -n samba
 | dnsConfig | object | `{}` | DNS configuration for pods |
 | dnsPolicy | string | `"ClusterFirst"` | DNS policy for pods |
 | env | object | See `values.yaml` | Environment variables |
-| env.ADVERTISED_HOSTNAME | string | empty | Advertised hostname for Time Machine |
-| env.CUSTOM_SMB_CONF | string | `"false"` | Use custom SMB configuration |
-| env.CUSTOM_USER | string | `"false"` | Use custom user configuration |
-| env.DEBUG_LEVEL | string | `"1"` | Debug level (0-10) |
-| env.EXTERNAL_CONF | string | empty | External configuration file path |
-| env.HIDE_SHARES | string | `"no"` | Hide shares from network |
-| env.MIMIC_MODEL | string | `"TimeCapsule8,119"` | Mimic Apple Time Capsule model |
-| env.PASSWORD | string | `"timemachine"` | Password for Time Machine access (CHANGE THIS!) WARNING: This is a default password. You MUST change it in production! |
-| env.SET_PERMISSIONS | string | `"false"` | Set permissions on volume |
-| env.SHARE_NAME | string | `"TimeMachine"` | SMB share name |
-| env.SMB_INHERIT_PERMISSIONS | string | `"no"` | Inherit permissions from volume |
-| env.SMB_METADATA | string | `"stream"` | SMB metadata handling |
-| env.SMB_NFS_ACES | string | `"no"` | Use NFS ACLs |
-| env.SMB_PORT | string | `"445"` | SMB port |
-| env.SMB_VFS_OBJECTS | string | `"fruit streams_xattr"` | SMB VFS objects |
-| env.TM_GID | string | `"1000"` | Time Machine group ID |
-| env.TM_GROUPNAME | string | `"timemachine"` | Time Machine group name |
-| env.TM_UID | string | `"1000"` | Time Machine user ID |
-| env.TM_USERNAME | string | `"timemachine"` | Time Machine username |
-| env.VOLUME_SIZE_LIMIT | string | `"0"` | Volume size limit (0 = unlimited) |
-| env.WORKGROUP | string | `"WORKGROUP"` | SMB workgroup name |
+| env.ACCOUNT_timemachine | string | empty | Account username for Samba access Format: ACCOUNT_username (e.g., ACCOUNT_timemachine) |
+| env.AVAHI_DISABLE | string | empty | Disable Avahi service (set to any value to disable) |
+| env.AVAHI_NAME | string | empty | Avahi service name (default: hostname) |
+| env.GID_timemachine | string | empty | Group ID for the account Format: GID_username (e.g., GID_timemachine) |
+| env.MODEL | string | `"TimeCapsule"` | Time Machine model value for Avahi service Available options: TimeCapsule, Xserve, PowerBook, PowerMac, Macmini, iMac, MacBook, MacBookPro, MacBookAir, MacPro, MacPro6,1, MacPro7,1, etc. |
+| env.NETBIOS_DISABLE | string | empty | Disable NetBIOS (set to any value to disable, not recommended) |
+| env.PASSWORD_timemachine | string | `"timemachine"` | Password for the account (CHANGE THIS!) Format: PASSWORD_username (e.g., PASSWORD_timemachine) WARNING: This is a default password. You MUST change it in production! |
+| env.SAMBA_CONF_LOG_LEVEL | string | `"1"` | Samba log level (default: 1) |
+| env.SAMBA_CONF_MAP_TO_GUEST | string | `"Bad User"` | Samba map to guest setting |
+| env.SAMBA_CONF_SERVER_ROLE | string | `"standalone server"` | Samba server role (default: standalone server) Note: $ is an invalid symbol in this env |
+| env.SAMBA_CONF_SERVER_STRING | string | `"Samba Server"` | Samba server string |
+| env.SAMBA_CONF_WORKGROUP | string | `"WORKGROUP"` | Samba workgroup name |
+| env.SAMBA_VOLUME_CONFIG_timemachine | string | empty | Samba volume configuration Format: SAMBA_VOLUME_CONFIG_myconfigname For Time Machine, add: fruit:time machine = yes Use ; to separate multiple lines (automatically translated to \n) Example: path = /shares/timemachine; fruit:time machine = yes; fruit:time machine max size = 500G |
+| env.UID_timemachine | string | empty | User ID for the account Format: UID_username (e.g., UID_timemachine) |
+| env.WSDD2_DISABLE | string | empty | Disable wsdd2 service (set to any value to disable) |
+| env.WSDD2_PARAMETERS | string | empty | wsdd2 parameters |
 | envExtra | list | empty | Additional environment variables (for complex values like valueFrom) Use this for environment variables that need valueFrom or other complex structures Variables defined here will override variables with the same name from `env` |
 | fullnameOverride | string | empty | Override the full name of the chart |
 | hostNetwork | bool | `true` | Use host network for the pod |
 | image | object | See `values.yaml` | Image configuration for Samba Time Machine |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy (IfNotPresent, Always, Never) |
-| image.repository | string | `"mbentley/timemachine"` | Container image repository for Samba Time Machine |
+| image.repository | string | `"ghcr.io/servercontainers/samba"` | Container image repository for Samba Time Machine |
 | image.tag | string | empty | Container image tag (overrides chart appVersion if set) |
 | imagePullSecrets | list | `[]` | Image pull secrets for private registries |
 | nameOverride | string | empty | Override the name of the chart |
