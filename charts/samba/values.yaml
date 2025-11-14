@@ -61,6 +61,10 @@ terminationGracePeriodSeconds: ""
 service:
   # -- Kubernetes service type (ClusterIP, NodePort, LoadBalancer)
   type: ClusterIP
+  # -- External traffic policy (Local, Cluster) - Only valid for LoadBalancer and NodePort services
+  # Preserves source IP address when set to Local. Requires health checks on all nodes.
+  # @default -- empty
+  externalTrafficPolicy: ""
   # -- Service ports configuration
   # @default -- See `values.yaml`
   ports:

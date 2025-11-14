@@ -1,6 +1,6 @@
 # samba
 
-![Version: 2.0.1](https://img.shields.io/badge/Version-2.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
+![Version: 2.1.0](https://img.shields.io/badge/Version-2.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
 
 A Helm chart for Samba Time Machine on Kubernetes
 
@@ -106,6 +106,7 @@ helm uninstall samba -n samba
 | resources.requests.memory | string | `"128Mi"` | Memory request for the container |
 | securityContext | object | `{}` | Security context for the container (applies to the main container) |
 | service | object | See `values.yaml` | Service configuration |
+| service.externalTrafficPolicy | string | empty | External traffic policy (Local, Cluster) - Only valid for LoadBalancer and NodePort services Preserves source IP address when set to Local. Requires health checks on all nodes. |
 | service.ports | object | See `values.yaml` | Service ports configuration |
 | service.ports.tcp139 | int | `139` | NetBIOS Name Service port (TCP) - Used for NetBIOS name resolution |
 | service.ports.tcp445 | int | `445` | SMB/CIFS port (TCP) - Main file sharing port for SMB protocol |
