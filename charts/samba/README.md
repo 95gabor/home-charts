@@ -1,6 +1,6 @@
 # samba
 
-![Version: 2.1.2](https://img.shields.io/badge/Version-2.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
+![Version: 2.2.0](https://img.shields.io/badge/Version-2.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
 
 A Helm chart for Samba Time Machine on Kubernetes
 
@@ -71,7 +71,7 @@ helm uninstall samba -n samba
 | env.TM_USERNAME | string | `"timemachine"` | Time Machine username |
 | env.VOLUME_SIZE_LIMIT | string | `"0"` | Volume size limit (0 = unlimited) |
 | env.WORKGROUP | string | `"WORKGROUP"` | SMB workgroup name |
-| envExtra | list | empty | Additional environment variables (for complex values like valueFrom) Use this for environment variables that need valueFrom or other complex structures |
+| envExtra | list | empty | Additional environment variables (for complex values like valueFrom) Use this for environment variables that need valueFrom or other complex structures Variables defined here will override variables with the same name from `env` |
 | fullnameOverride | string | empty | Override the full name of the chart |
 | hostNetwork | bool | `true` | Use host network for the pod |
 | image | object | See `values.yaml` | Image configuration for Samba Time Machine |
