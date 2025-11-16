@@ -44,6 +44,43 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       dnsPolicy: {{ .Values.dnsPolicy | default "ClusterFirst" }}
+      initContainers:
+        - name: init-directories
+          image: busybox:1.36
+          securityContext:
+            runAsUser: 0
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - CHOWN
+                - FOWNER
+                - MKNOD
+          command:
+            - sh
+            - -c
+            - |
+              # Create Samba state directories with proper permissions
+              mkdir -p /var/lib/samba/private
+              mkdir -p /var/cache/samba
+              mkdir -p /run/samba
+              chmod -R 0755 /var/lib/samba
+              chmod -R 0755 /var/cache/samba
+              chmod -R 0755 /run/samba
+              # Create share directories (extract from SAMBA_VOLUME_CONFIG env vars)
+              # This creates common Time Machine share directory
+              mkdir -p /shares/timemachine
+              chmod 0755 /shares/timemachine
+          volumeMounts:
+            - name: shares
+              mountPath: /shares
+            - name: var-lib-samba
+              mountPath: /var/lib/samba
+            - name: var-cache-samba
+              mountPath: /var/cache/samba
+            - name: run-samba
+              mountPath: /run/samba
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
