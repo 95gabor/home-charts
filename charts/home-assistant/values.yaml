@@ -71,7 +71,15 @@ podSecurityContext: {}
   # fsGroup: 2000
 
 # -- Security context for the container (applies to the main container)
-securityContext: {}
+# @default -- See `values.yaml`
+securityContext:
+  # -- Linux capabilities to add to the container
+  # NET_ADMIN and NET_RAW are required for Home Assistant to manage network interfaces
+  # (e.g., for Z-Wave, Zigbee, and other network-based integrations)
+  capabilities:
+    add:
+      - NET_ADMIN
+      - NET_RAW
   # capabilities:
   #   drop:
   #   - ALL
