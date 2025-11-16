@@ -1,6 +1,6 @@
 # home-assistant
 
-![Version: 2.2.1](https://img.shields.io/badge/Version-2.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2025.11.2](https://img.shields.io/badge/AppVersion-2025.11.2-informational?style=flat-square)
+![Version: 2.3.0](https://img.shields.io/badge/Version-2.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2025.11.2](https://img.shields.io/badge/AppVersion-2025.11.2-informational?style=flat-square)
 
 A Helm chart for Home Assistant on Kubernetes
 
@@ -125,7 +125,8 @@ helm uninstall home-assistant -n home-assistant
 | resources.requests | object | See `values.yaml` | Resource requests |
 | resources.requests.cpu | string | `"500m"` | CPU request for the container |
 | resources.requests.memory | string | `"512Mi"` | Memory request for the container |
-| securityContext | object | `{}` | Security context for the container (applies to the main container) |
+| securityContext | object | See `values.yaml` | Security context for the container (applies to the main container) |
+| securityContext.capabilities | object | `{"add":["NET_ADMIN","NET_RAW"]}` | Linux capabilities to add to the container NET_ADMIN and NET_RAW are required for Home Assistant to manage network interfaces (e.g., for Z-Wave, Zigbee, and other network-based integrations) |
 | service | object | See `values.yaml` | Service configuration |
 | service.port | int | `80` | Service port number exposed by the service |
 | service.portName | string | `"http"` | Name of the service port |
