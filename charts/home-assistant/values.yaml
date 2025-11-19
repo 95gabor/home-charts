@@ -76,7 +76,9 @@ securityContext:
   # -- Linux capabilities to add to the container
   # NET_ADMIN and NET_RAW are required for Home Assistant to manage network interfaces
   # (e.g., for Z-Wave, Zigbee, and other network-based integrations)
+  # @default -- See `values.yaml`
   capabilities:
+    # -- Capabilities to add
     add:
       - NET_ADMIN
       - NET_RAW

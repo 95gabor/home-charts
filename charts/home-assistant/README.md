@@ -126,7 +126,8 @@ helm uninstall home-assistant -n home-assistant
 | resources.requests.cpu | string | `"500m"` | CPU request for the container |
 | resources.requests.memory | string | `"512Mi"` | Memory request for the container |
 | securityContext | object | See `values.yaml` | Security context for the container (applies to the main container) |
-| securityContext.capabilities | object | `{"add":["NET_ADMIN","NET_RAW"]}` | Linux capabilities to add to the container NET_ADMIN and NET_RAW are required for Home Assistant to manage network interfaces (e.g., for Z-Wave, Zigbee, and other network-based integrations) |
+| securityContext.capabilities | object | See `values.yaml` | Linux capabilities to add to the container NET_ADMIN and NET_RAW are required for Home Assistant to manage network interfaces (e.g., for Z-Wave, Zigbee, and other network-based integrations) |
+| securityContext.capabilities.add | list | `["NET_ADMIN","NET_RAW"]` | Capabilities to add |
 | service | object | See `values.yaml` | Service configuration |
 | service.port | int | `80` | Service port number exposed by the service |
 | service.portName | string | `"http"` | Name of the service port |
