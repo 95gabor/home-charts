@@ -58,8 +58,8 @@ spec:
         - name: init-container
           image: alpine:3.18.5
           securityContext:
-            runAsNonRoot: true
-            runAsUser: 1000
+            runAsNonRoot: false
+            runAsUser: 0
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
             capabilities:

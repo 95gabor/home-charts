@@ -67,8 +67,10 @@ podAnnotations: {}
 podLabels: {}
 
 # -- Pod security context (applies to all containers in the pod)
-podSecurityContext: {}
-  # fsGroup: 2000
+# @default -- See `values.yaml`
+podSecurityContext:
+  fsGroup: 0
+  runAsNonRoot: false
 
 # -- Security context for the container (applies to the main container)
 # @default -- See `values.yaml`
@@ -78,16 +80,17 @@ securityContext:
   # (e.g., for Z-Wave, Zigbee, and other network-based integrations)
   # @default -- See `values.yaml`
   capabilities:
+    runAsNonRoot: false
+    runAsUser: 0
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: false
     # -- Capabilities to add
     add:
       - NET_ADMIN
       - NET_RAW
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+    # -- Capabilities to drop
+    drop:
+      - ALL
 
 # -- Service configuration
 # @default -- See `values.yaml`
