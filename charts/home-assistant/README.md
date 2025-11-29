@@ -1,6 +1,6 @@
 # home-assistant
 
-![Version: 2.3.1](https://img.shields.io/badge/Version-2.3.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2025.11.3](https://img.shields.io/badge/AppVersion-2025.11.3-informational?style=flat-square)
+![Version: 2.3.2](https://img.shields.io/badge/Version-2.3.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2025.11.3](https://img.shields.io/badge/AppVersion-2025.11.3-informational?style=flat-square)
 
 A Helm chart for Home Assistant on Kubernetes
 
@@ -106,7 +106,7 @@ helm uninstall home-assistant -n home-assistant
 | podDisruptionBudget.maxUnavailable | string | empty | Maximum number of unavailable pods during disruptions (mutually exclusive with minAvailable) |
 | podDisruptionBudget.minAvailable | string | empty | Minimum number of available pods during disruptions (mutually exclusive with maxUnavailable) |
 | podLabels | object | `{}` | Pod labels (metadata for pod selection and organization) |
-| podSecurityContext | object | `{}` | Pod security context (applies to all containers in the pod) |
+| podSecurityContext | object | See `values.yaml` | Pod security context (applies to all containers in the pod) |
 | postgresOperator | object | See `values.yaml` | PostgreSQL operator configuration |
 | postgresOperator.annotations | object | `{}` | Annotations to add to PostgreSQL resources created by the operator |
 | postgresOperator.databaseName | string | `"home-assistant"` | Name of the PostgreSQL database to create |
@@ -128,6 +128,7 @@ helm uninstall home-assistant -n home-assistant
 | securityContext | object | See `values.yaml` | Security context for the container (applies to the main container) |
 | securityContext.capabilities | object | See `values.yaml` | Linux capabilities to add to the container NET_ADMIN and NET_RAW are required for Home Assistant to manage network interfaces (e.g., for Z-Wave, Zigbee, and other network-based integrations) |
 | securityContext.capabilities.add | list | `["NET_ADMIN","NET_RAW"]` | Capabilities to add |
+| securityContext.capabilities.drop | list | `["ALL"]` | Capabilities to drop |
 | service | object | See `values.yaml` | Service configuration |
 | service.port | int | `80` | Service port number exposed by the service |
 | service.portName | string | `"http"` | Name of the service port |
