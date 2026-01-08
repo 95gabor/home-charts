@@ -3,5 +3,5 @@ name: home-assistant
 description: A Helm chart for Home Assistant on Kubernetes
 icon: https://github.com/home-assistant.png
 type: application
-version: 3.0.5
-appVersion: "2025.12.5"
+version: 4.0.0
+appVersion: "2026.1.0"
