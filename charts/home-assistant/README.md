@@ -1,6 +1,6 @@
 # home-assistant
 
-![Version: 3.0.5](https://img.shields.io/badge/Version-3.0.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2025.12.5](https://img.shields.io/badge/AppVersion-2025.12.5-informational?style=flat-square)
+![Version: 4.0.0](https://img.shields.io/badge/Version-4.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2026.1.0](https://img.shields.io/badge/AppVersion-2026.1.0-informational?style=flat-square)
 
 A Helm chart for Home Assistant on Kubernetes
 
