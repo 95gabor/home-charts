@@ -2,6 +2,17 @@ apiVersion: v1
 entries:
   home-assistant:
   - apiVersion: v2
+    appVersion: 2026.4.4
+    created: "2026-04-26T06:10:54.376509414Z"
+    description: A Helm chart for Home Assistant on Kubernetes
+    digest: 8666c94866c58ed65ee637e2cc5097048ef40deb028c9df901c6be5f9af7ccb0
+    icon: https://github.com/home-assistant.png
+    name: home-assistant
+    type: application
+    urls:
+    - https://github.com/95gabor/home-charts/releases/download/home-assistant-7.0.4/home-assistant-7.0.4.tgz
+    version: 7.0.4
+  - apiVersion: v2
     appVersion: 2026.4.3
     created: "2026-04-18T08:22:51.637365705Z"
     description: A Helm chart for Home Assistant on Kubernetes
@@ -1706,4 +1717,4 @@ entries:
     urls:
     - https://github.com/95gabor/home-charts/releases/download/samba-0.0.1/samba-0.0.1.tgz
     version: 0.0.1
-generated: "2026-04-18T08:22:51.637722966Z"
+generated: "2026-04-26T06:10:54.376944557Z"
