@@ -7,6 +7,12 @@ on:
     paths:
       - "**/Chart.yaml"
 
+# Serialize with sync-readme: both push to gh-pages; concurrent pushes cause
+# non-fast-forward failures in chart-releaser.
+concurrency:
+  group: gh-pages
+  cancel-in-progress: false
+
 jobs:
   release:
     permissions:
