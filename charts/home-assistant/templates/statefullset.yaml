@@ -56,7 +56,7 @@ spec:
       {{- if gt (len .Values.homeAssistant.secrets) 0 }}
       initContainers:
         - name: init-container
-          image: alpine:3.18.5
+          image: alpine:3.24.1@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b
           securityContext:
             runAsNonRoot: false
             runAsUser: 0
@@ -78,7 +78,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}{{ with .Values.image.digest }}@{{ . }}{{ else }}:{{ .Values.image.tag | default .Chart.AppVersion }}{{ end }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- with .Values.securityContext }}
           securityContext:
