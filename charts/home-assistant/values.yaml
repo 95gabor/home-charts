@@ -15,6 +15,9 @@ image:
   # -- Container image tag (overrides chart appVersion if set)
   # @default -- empty
   tag: ""
+  # -- Optional image digest (sha256:...). When set, takes precedence over tag/appVersion
+  # @default -- empty
+  digest: ""
 
 # -- Image pull secrets for private registries
 imagePullSecrets: []

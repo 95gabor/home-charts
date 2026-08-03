@@ -46,7 +46,7 @@ spec:
       dnsPolicy: {{ .Values.dnsPolicy | default "ClusterFirst" }}
       initContainers:
         - name: init-directories
-          image: busybox:1.36
+          image: busybox:1.38.0@sha256:dc2d74b28e4cf8984fa52af1f39bc7c3d9c73760b41a74d629f5d11b1ab28616
           securityContext:
             runAsUser: 0
             allowPrivilegeEscalation: false
@@ -87,7 +87,7 @@ spec:
               mountPath: /run/samba
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}{{ with .Values.image.digest }}@{{ . }}{{ else }}:{{ .Values.image.tag | default .Chart.AppVersion }}{{ end }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- with .Values.securityContext }}
           securityContext:
