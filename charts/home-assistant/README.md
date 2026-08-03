@@ -1,6 +1,6 @@
 # home-assistant
 
-![Version: 10.0.4](https://img.shields.io/badge/Version-10.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2026.7.4](https://img.shields.io/badge/AppVersion-2026.7.4-informational?style=flat-square)
+![Version: 10.0.5](https://img.shields.io/badge/Version-10.0.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2026.7.4](https://img.shields.io/badge/AppVersion-2026.7.4-informational?style=flat-square)
 
 A Helm chart for Home Assistant on Kubernetes
 
@@ -80,6 +80,7 @@ helm uninstall home-assistant -n home-assistant
 | homeAssistant.secrets | list | `[]` | Secrets configuration for Home Assistant |
 | homeAssistant.timezone | string | `"Europe/Budapest"` | Timezone for Home Assistant (IANA timezone database name) |
 | image | object | See `values.yaml` | Image configuration for Home Assistant |
+| image.digest | string | empty | Optional image digest (sha256:...). When set, takes precedence over tag/appVersion |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy (IfNotPresent, Always, Never) |
 | image.repository | string | `"homeassistant/home-assistant"` | Container image repository for Home Assistant |
 | image.tag | string | empty | Container image tag (overrides chart appVersion if set) |

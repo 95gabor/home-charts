@@ -1,6 +1,6 @@
 # samba
 
-![Version: 3.0.6](https://img.shields.io/badge/Version-3.0.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: smbd-only-latest](https://img.shields.io/badge/AppVersion-smbd-only-latest-informational?style=flat-square)
+![Version: 3.1.1](https://img.shields.io/badge/Version-3.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: smbd-only-latest](https://img.shields.io/badge/AppVersion-smbd-only-latest-informational?style=flat-square)
 
 A Helm chart for Samba Time Machine on Kubernetes
 
@@ -57,6 +57,7 @@ helm uninstall samba -n samba
 | fullnameOverride | string | empty | Override the full name of the chart |
 | hostNetwork | bool | `true` | Use host network for the pod |
 | image | object | See `values.yaml` | Image configuration for Samba Time Machine |
+| image.digest | string | `"sha256:a789aa42c2e5db804fab5fb5dd5f2d4343a9a8a7789e4a191aab45e993c15d4f"` | Multi-arch digest for smbd-only-latest (takes precedence over tag/appVersion) |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy (IfNotPresent, Always, Never) |
 | image.repository | string | `"ghcr.io/servercontainers/samba"` | Container image repository for Samba Time Machine |
 | image.tag | string | empty | Container image tag (overrides chart appVersion if set) |
