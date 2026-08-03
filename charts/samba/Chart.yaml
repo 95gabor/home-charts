@@ -4,4 +4,4 @@ description: A Helm chart for Samba Time Machine on Kubernetes
 icon: https://www.samba.org/samba/img/samba-logo.png
 type: application
 version: 3.1.0
-appVersion: "smbd-only-a3.24.1-s4.23.8-r0"
+appVersion: "smbd-only-latest"

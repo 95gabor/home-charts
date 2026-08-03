@@ -15,8 +15,9 @@ image:
   # -- Container image tag (overrides chart appVersion if set)
   # @default -- empty
   tag: ""
-  # -- Multi-arch image digest for smbd-only-a3.24.1-s4.23.8-r0 (takes precedence over tag/appVersion)
-  digest: "sha256:0b8ce469f097a1afdd4f286c4313dae52ce18aad6a7e3b25ee3d93fd09200866"
+  # -- Multi-arch image digest for current smbd-only-latest (takes precedence over tag/appVersion)
+  # Pinned for reproducibility; prefer digest over floating tag at deploy time.
+  digest: "sha256:a789aa42c2e5db804fab5fb5dd5f2d4343a9a8a7789e4a191aab45e993c15d4f"
 
 # -- Image pull secrets for private registries
 imagePullSecrets: []
