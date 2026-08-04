@@ -24,9 +24,11 @@ jobs:
       - uses: pre-commit/action@v3.0.1
 
       - name: Install semver CLI
+        env:
+          SEMVER_TOOL_VERSION: 3.4.0
         run: |
           wget -O /usr/local/bin/semver \
-            https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
+            "https://raw.githubusercontent.com/fsaintjacques/semver-tool/${SEMVER_TOOL_VERSION}/src/semver"
           chmod +x /usr/local/bin/semver
           semver --version
 
