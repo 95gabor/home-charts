@@ -25,11 +25,10 @@ jobs:
 
       - name: Install semver CLI
         env:
-          # Latest semver-tool release 3.4.0 resolved to this commit.
-          SEMVER_TOOL_COMMIT: 837ad91179c4126e3b7ff73c35091d5ef561d9a3
+          SEMVER_TOOL_VERSION: 3.4.0
         run: |
           wget -O /usr/local/bin/semver \
-            "https://raw.githubusercontent.com/fsaintjacques/semver-tool/${SEMVER_TOOL_COMMIT}/src/semver"
+            "https://raw.githubusercontent.com/fsaintjacques/semver-tool/${SEMVER_TOOL_VERSION}/src/semver"
           chmod +x /usr/local/bin/semver
           semver --version
 
