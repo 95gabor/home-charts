@@ -18,6 +18,16 @@ image:
   # -- Multi-arch digest for smbd-only-latest (takes precedence over tag/appVersion)
   digest: "sha256:a789aa42c2e5db804fab5fb5dd5f2d4343a9a8a7789e4a191aab45e993c15d4f"
 
+# -- Init container image used to prepare Samba directories (multi-arch index digest)
+# @default -- See `values.yaml`
+initImage:
+  # -- Init container image repository
+  repository: busybox
+  # -- Init container image tag
+  tag: "1.38.0"
+  # -- Multi-arch digest for busybox:1.38.0 (takes precedence over tag when set)
+  digest: "sha256:dc2d74b28e4cf8984fa52af1f39bc7c3d9c73760b41a74d629f5d11b1ab28616"
+
 # -- Image pull secrets for private registries
 imagePullSecrets: []
 # -- Override the name of the chart
