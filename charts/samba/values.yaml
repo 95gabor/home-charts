@@ -73,6 +73,9 @@ terminationGracePeriodSeconds: ""
 service:
   # -- Kubernetes service type (ClusterIP, NodePort, LoadBalancer)
   type: ClusterIP
+  # -- Requested LoadBalancer IP (MetalLB / cloud LB); only used when type is LoadBalancer
+  # @default -- empty
+  loadBalancerIP: ""
   # -- External traffic policy (Local, Cluster) - Only valid for LoadBalancer and NodePort services
   # Preserves source IP address when set to Local. Requires health checks on all nodes.
   # @default -- empty
