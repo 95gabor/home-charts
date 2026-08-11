@@ -46,7 +46,7 @@ spec:
       dnsPolicy: {{ .Values.dnsPolicy | default "ClusterFirst" }}
       initContainers:
         - name: init-directories
-          image: busybox:1.38.0@sha256:dc2d74b28e4cf8984fa52af1f39bc7c3d9c73760b41a74d629f5d11b1ab28616
+          image: "{{ .Values.initImage.repository }}{{ with .Values.initImage.digest }}@{{ . }}{{ else }}:{{ .Values.initImage.tag }}{{ end }}"
           securityContext:
             runAsUser: 0
             allowPrivilegeEscalation: false
