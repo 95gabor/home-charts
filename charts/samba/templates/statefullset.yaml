@@ -46,7 +46,7 @@ spec:
       dnsPolicy: {{ .Values.dnsPolicy | default "ClusterFirst" }}
       initContainers:
         - name: init-directories
-          image: "{{ .Values.initImage.repository }}{{ with .Values.initImage.digest }}@{{ . }}{{ else }}:{{ .Values.initImage.tag }}{{ end }}"
+          image: "{{ .Values.initImage.repository }}:{{ .Values.initImage.tag }}{{ with .Values.initImage.digest }}@{{ . }}{{ end }}"
           securityContext:
             runAsUser: 0
             allowPrivilegeEscalation: false

@@ -56,7 +56,7 @@ spec:
       {{- if gt (len .Values.homeAssistant.secrets) 0 }}
       initContainers:
         - name: init-container
-          image: "{{ .Values.initImage.repository }}{{ with .Values.initImage.digest }}@{{ . }}{{ else }}:{{ .Values.initImage.tag }}{{ end }}"
+          image: "{{ .Values.initImage.repository }}:{{ .Values.initImage.tag }}{{ with .Values.initImage.digest }}@{{ . }}{{ end }}"
           securityContext:
             runAsNonRoot: false
             runAsUser: 0
