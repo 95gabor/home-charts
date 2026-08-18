@@ -43,7 +43,7 @@ jobs:
         uses: azure/setup-helm@v5
         with:
           # Stay on Helm 3 latest; chart-releaser-action is validated against Helm 3.
-          version: v3.21.3
+          version: v3.21.4
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1
