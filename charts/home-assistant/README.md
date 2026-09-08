@@ -1,6 +1,6 @@
 # home-assistant
 
-![Version: 12.0.1](https://img.shields.io/badge/Version-12.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2026.9.1](https://img.shields.io/badge/AppVersion-2026.9.1-informational?style=flat-square)
+![Version: 12.0.2](https://img.shields.io/badge/Version-12.0.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2026.9.1](https://img.shields.io/badge/AppVersion-2026.9.1-informational?style=flat-square)
 
 A Helm chart for Home Assistant on Kubernetes
 
@@ -92,9 +92,9 @@ helm uninstall home-assistant -n home-assistant
 | ingress.hosts | list | `[]` | Ingress hosts configuration Each host can be configured with a single path (using 'path' and 'pathType') or multiple paths (using 'paths' array). If 'paths' is specified, it takes precedence. |
 | ingress.tls | list | `[]` | TLS configuration for ingress (certificate secrets) |
 | initImage | object | See `values.yaml` | Init container image used to assemble Home Assistant secrets (multi-arch index digest) |
-| initImage.digest | string | `"sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b"` | Multi-arch digest for alpine:3.24.1 (takes precedence over tag when set) |
-| initImage.repository | string | `"alpine"` | Init container image repository |
-| initImage.tag | string | `"3.24.1"` | Init container image tag (Alpine 3.24 LTS) |
+| initImage.digest | string | `"sha256:dc2d74b28e4cf8984fa52af1f39bc7c3d9c73760b41a74d629f5d11b1ab28616"` | Multi-arch digest for busybox:1.38.0 (takes precedence over tag when set) |
+| initImage.repository | string | `"busybox"` | Init container image repository |
+| initImage.tag | string | `"1.38.0"` | Init container image tag |
 | nameOverride | string | empty | Override the name of the chart |
 | networkPolicy | object | See `values.yaml` | Network Policy configuration |
 | networkPolicy.egress | list | empty | Egress rules defining allowed outgoing traffic |
