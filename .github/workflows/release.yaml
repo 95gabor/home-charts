@@ -43,13 +43,13 @@ jobs:
         uses: azure/setup-helm@v5
         with:
           # Stay on Helm 3 latest stable; chart-releaser-action is validated against Helm 3.
-          # Re-verified 2026-09-01: still latest Helm 3.x stable (v3.22.0-rc.1 / Helm 4.2.4 exist).
+          # Re-verified 2026-09-08: still latest Helm 3.x stable (v3.22.0-rc.1 / Helm 4.2.4 exist).
           version: v3.21.4
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1
         with:
-          # Explicit binary pin; bumped from v1.7.0 → v1.8.1 (2026-09-01).
+          # Explicit binary pin; cr v1.8.1 (re-verified 2026-09-08).
           # Action@v1 still defaults to v1.7.0; pin newer compatible cr release.
           version: v1.8.1
         env:

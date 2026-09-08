@@ -23,11 +23,11 @@ image:
 # @default -- See `values.yaml`
 initImage:
   # -- Init container image repository
-  repository: alpine
-  # -- Init container image tag (Alpine 3.24 LTS)
-  tag: "3.24.1"
-  # -- Multi-arch digest for alpine:3.24.1 (takes precedence over tag when set)
-  digest: "sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b"
+  repository: busybox
+  # -- Init container image tag
+  tag: "1.38.0"
+  # -- Multi-arch digest for busybox:1.38.0 (takes precedence over tag when set)
+  digest: "sha256:dc2d74b28e4cf8984fa52af1f39bc7c3d9c73760b41a74d629f5d11b1ab28616"
 
 # -- Image pull secrets for private registries
 imagePullSecrets: []
