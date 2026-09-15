@@ -16,7 +16,7 @@ image:
   # @default -- empty
   tag: ""
   # -- Multi-arch digest for smbd-only-latest (takes precedence over tag/appVersion)
-  digest: "sha256:a789aa42c2e5db804fab5fb5dd5f2d4343a9a8a7789e4a191aab45e993c15d4f"
+  digest: "sha256:31b90ea7fe3258d30fccd971c85743b92694605f4b43dc8a4df23a202fced06a"
 
 # -- Init container image used to prepare Samba directories (multi-arch index digest)
 # @default -- See `values.yaml`
