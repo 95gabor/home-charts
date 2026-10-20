@@ -44,7 +44,7 @@ jobs:
         with:
           # Stay on Helm 3 latest stable; chart-releaser-action is validated against Helm 3.
           # Re-verified 2026-09-22: latest Helm 3.x stable is v3.22.0 (Helm 4.3.0 also exists).
-          version: v3.22.0
+          version: v3.22.1
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1
