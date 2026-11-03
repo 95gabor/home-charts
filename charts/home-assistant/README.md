@@ -1,6 +1,6 @@
 # home-assistant
 
-![Version: 13.0.4](https://img.shields.io/badge/Version-13.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2026.10.4](https://img.shields.io/badge/AppVersion-2026.10.4-informational?style=flat-square)
+![Version: 13.0.5](https://img.shields.io/badge/Version-13.0.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2026.10.4](https://img.shields.io/badge/AppVersion-2026.10.4-informational?style=flat-square)
 
 A Helm chart for Home Assistant on Kubernetes
 
@@ -92,7 +92,7 @@ helm uninstall home-assistant -n home-assistant
 | ingress.hosts | list | `[]` | Ingress hosts configuration Each host can be configured with a single path (using 'path' and 'pathType') or multiple paths (using 'paths' array). If 'paths' is specified, it takes precedence. |
 | ingress.tls | list | `[]` | TLS configuration for ingress (certificate secrets) |
 | initImage | object | See `values.yaml` | Init container image used to assemble Home Assistant secrets (multi-arch index digest) |
-| initImage.digest | string | `"sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e"` | Multi-arch digest for busybox:1.38.0 (takes precedence over tag when set) |
+| initImage.digest | string | `"sha256:a46257e06c82ad85242d0d38077d0a52d9896389ca60a1a59d3463db586e5fa4"` | Multi-arch digest for busybox:1.38.0 (takes precedence over tag when set) |
 | initImage.repository | string | `"busybox"` | Init container image repository |
 | initImage.tag | string | `"1.38.0"` | Init container image tag |
 | nameOverride | string | empty | Override the name of the chart |
