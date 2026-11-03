@@ -1,6 +1,6 @@
 # samba
 
-![Version: 3.1.7](https://img.shields.io/badge/Version-3.1.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: smbd-only-a3.24.3-s4.23.8-r0](https://img.shields.io/badge/AppVersion-smbd-only-a3.24.3-s4.23.8-r0-informational?style=flat-square)
+![Version: 3.1.8](https://img.shields.io/badge/Version-3.1.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: smbd-only-a3.24.3-s4.23.8-r0](https://img.shields.io/badge/AppVersion-smbd-only-a3.24.3-s4.23.8-r0-informational?style=flat-square)
 
 A Helm chart for Samba Time Machine on Kubernetes
 
@@ -63,7 +63,7 @@ helm uninstall samba -n samba
 | image.tag | string | empty | Container image tag (overrides chart appVersion if set) |
 | imagePullSecrets | list | `[]` | Image pull secrets for private registries |
 | initImage | object | See `values.yaml` | Init container image used to prepare Samba directories (multi-arch index digest) |
-| initImage.digest | string | `"sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e"` | Multi-arch digest for busybox:1.38.0 (takes precedence over tag when set) |
+| initImage.digest | string | `"sha256:a46257e06c82ad85242d0d38077d0a52d9896389ca60a1a59d3463db586e5fa4"` | Multi-arch digest for busybox:1.38.0 (takes precedence over tag when set) |
 | initImage.repository | string | `"busybox"` | Init container image repository |
 | initImage.tag | string | `"1.38.0"` | Init container image tag |
 | nameOverride | string | empty | Override the name of the chart |
