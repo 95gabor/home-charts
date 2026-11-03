@@ -3,6 +3,17 @@ entries:
   home-assistant:
   - apiVersion: v2
     appVersion: 2026.10.4
+    created: "2026-11-03T08:53:12.708352359Z"
+    description: A Helm chart for Home Assistant on Kubernetes
+    digest: 30cfa39540e3468c436159420c96c4c31336f935dd7b7dbc0d314a94e7222bd1
+    icon: https://github.com/home-assistant.png
+    name: home-assistant
+    type: application
+    urls:
+    - https://github.com/95gabor/home-charts/releases/download/home-assistant-13.0.5/home-assistant-13.0.5.tgz
+    version: 13.0.5
+  - apiVersion: v2
+    appVersion: 2026.10.4
     created: "2026-10-25T13:05:07.343881158Z"
     description: A Helm chart for Home Assistant on Kubernetes
     digest: e107f35b939c0db4c1b952b2189822494b6b5afd11156273ead2bde4dfb72744
@@ -1951,6 +1962,17 @@ entries:
   samba:
   - apiVersion: v2
     appVersion: smbd-only-a3.24.3-s4.23.8-r0
+    created: "2026-11-03T08:53:12.878110537Z"
+    description: A Helm chart for Samba Time Machine on Kubernetes
+    digest: 89ed2efda391a7d357d136d098498b14c1d2f23d3ef152e165af2230f3151bfb
+    icon: https://www.samba.org/samba/img/samba-logo.png
+    name: samba
+    type: application
+    urls:
+    - https://github.com/95gabor/home-charts/releases/download/samba-3.1.8/samba-3.1.8.tgz
+    version: 3.1.8
+  - apiVersion: v2
+    appVersion: smbd-only-a3.24.3-s4.23.8-r0
     created: "2026-10-29T08:52:22.114217772Z"
     description: A Helm chart for Samba Time Machine on Kubernetes
     digest: 66d680adf2ec4ec9e81518efcceab958baac8e820990f0382783c2fedcbfd9a4
@@ -2157,4 +2179,4 @@ entries:
     urls:
     - https://github.com/95gabor/home-charts/releases/download/samba-0.0.1/samba-0.0.1.tgz
     version: 0.0.1
-generated: "2026-10-29T08:52:22.114564248Z"
+generated: "2026-11-03T08:53:12.878519403Z"
