@@ -16,20 +16,23 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.x"
 
-      - uses: pre-commit/action@v3.0.1
+      - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
 
       - name: Install semver CLI
         env:
           SEMVER_TOOL_VERSION: 3.4.0
+          # sha256 of src/semver at tag 3.4.0 (verified 2026-11-24)
+          SEMVER_TOOL_SHA256: 1ff4a97e4d1e389f6f034f7464ac4365f1be2d900e2dc2121e24a6dc239e8991
         run: |
           wget -O /usr/local/bin/semver \
             "https://raw.githubusercontent.com/fsaintjacques/semver-tool/${SEMVER_TOOL_VERSION}/src/semver"
+          echo "${SEMVER_TOOL_SHA256}  /usr/local/bin/semver" | sha256sum -c -
           chmod +x /usr/local/bin/semver
           semver --version
 
@@ -80,7 +83,7 @@ jobs:
         run: pre-commit run --all-files || pre-commit run --all-files
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8.1.3
         if: github.ref == 'refs/heads/main'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

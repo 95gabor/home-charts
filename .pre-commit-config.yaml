@@ -4,14 +4,14 @@ default_install_hook_types:
   - commit-msg
 repos:
   - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v4.5.0
+    rev: 33b50eb042bee26eac0ee96ad84aa9c1b4dccdd8 # v4.5.0
     hooks:
       - id: conventional-pre-commit
         stages:
           - commit-msg
         args: []
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c # v6.0.0
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -22,11 +22,11 @@ repos:
       - id: mixed-line-ending
       - id: trailing-whitespace
   - repo: https://github.com/gruntwork-io/pre-commit
-    rev: v0.1.30
+    rev: 40f924cd642f5dc98d12bd97b07f3752223553da # v0.1.30
     hooks:
     - id: helmlint
   - repo: https://github.com/norwoodj/helm-docs
-    rev: v1.14.2
+    rev: 37d3055fece566105cf8cff7c17b7b2355a01677 # v1.14.2
     hooks:
       - id: helm-docs-container
         entry: jnorwood/helm-docs:v1.14.2
